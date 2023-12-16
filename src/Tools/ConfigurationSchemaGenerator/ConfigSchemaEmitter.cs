@@ -3,6 +3,7 @@
 
 using System.Diagnostics;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
@@ -21,7 +22,7 @@ internal sealed partial class ConfigSchemaEmitter(SchemaGenerationSpec spec, Com
     private readonly Stack<TypeSpec> _visitedTypes = new();
     private readonly string[] _exclusionPaths = CreateExclusionPaths(spec.ExclusionPaths);
 
-    [GeneratedRegex(@"( *)\r?\n( *)", RegexOptions.IgnoreCase)]
+    [GeneratedRegex(@"( *)\r?\n( *)")]
     private static partial Regex Indentation();
 
     public string GenerateSchema()
@@ -37,7 +38,7 @@ internal sealed partial class ConfigSchemaEmitter(SchemaGenerationSpec spec, Com
             // ensure the properties are ordered correctly
             Converters = { SchemaOrderJsonNodeConverter.Instance },
             // prevent known escaped characters from being \uxxxx encoded
-            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
         };
         return JsonSerializer.Serialize(root, options);
     }
