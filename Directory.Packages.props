@@ -111,7 +111,7 @@
     <PackageVersion Include="NATS.Net" Version="2.3.0" />
     <PackageVersion Include="Npgsql.DependencyInjection" Version="8.0.3" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
-    <PackageVersion Include="Oracle.EntityFrameworkCore" Version="8.23.40" />
+    <PackageVersion Include="Oracle.EntityFrameworkCore" Version="8.23.50" />
     <PackageVersion Include="Polly.Core" Version="8.4.1" />
     <PackageVersion Include="Polly.Extensions" Version="8.4.1" />
     <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
