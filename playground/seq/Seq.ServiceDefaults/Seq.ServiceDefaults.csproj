@@ -18,6 +18,8 @@
     <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" />
     <PackageReference Include="OpenTelemetry.Instrumentation.Http" />
     <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" />
+    <PackageReference Include="Polly.Core" />
+    <PackageReference Include="Polly.Extensions" />
     <ProjectReference Include="..\..\..\src\Components\Aspire.Seq\Aspire.Seq.csproj" />
 
     <ProjectReference Include="..\..\..\src\Microsoft.Extensions.ServiceDiscovery.Dns\Microsoft.Extensions.ServiceDiscovery.Dns.csproj" />
