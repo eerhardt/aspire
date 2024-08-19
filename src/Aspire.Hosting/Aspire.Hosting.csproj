@@ -43,6 +43,8 @@
     <PackageReference Include="Grpc.AspNetCore" />
     <PackageReference Include="KubernetesClient" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Options" />
     <PackageReference Include="Polly.Core" />
   </ItemGroup>
 

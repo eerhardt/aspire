@@ -8,6 +8,7 @@
   <ItemGroup>
     <None Include="$(RepoRoot)src\Components\Aspire.MySqlConnector\ConfigurationSchema.json" CopyToOutputDirectory="PreserveNewest" />
     <Compile Include="$(RepoRoot)src\Aspire.Hosting.MySql\MySqlContainerImageTags.cs" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
 
     <PackageReference Include="Testcontainers.MySql" />
 
