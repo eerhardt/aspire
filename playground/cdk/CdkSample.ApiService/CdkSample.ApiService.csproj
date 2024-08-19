@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Identity" />
+    <PackageReference Include="Azure.Security.KeyVault.Secrets" />
     <ProjectReference Include="..\..\..\src\Components\Aspire.Azure.Messaging.ServiceBus\Aspire.Azure.Messaging.ServiceBus.csproj" />
     <ProjectReference Include="..\..\..\src\Components\Aspire.Azure.Search.Documents\Aspire.Azure.Search.Documents.csproj" />
     <ProjectReference Include="..\..\..\src\Components\Aspire.Azure.Security.KeyVault\Aspire.Azure.Security.KeyVault.csproj" />
