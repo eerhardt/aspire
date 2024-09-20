@@ -1,2 +1,3 @@
 #nullable enable
-
+Aspire.Hosting.Azure.AzureStorageResourceVersions
+static Aspire.Hosting.Azure.AzureStorageResourceVersions.Version1.get -> System.Action<Aspire.Hosting.ResourceModuleConstruct!>!
