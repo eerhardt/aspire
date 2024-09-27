@@ -1,19 +1,15 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var redis = builder.AddRedis("redis")
-    .WithDataVolume()
-    .WithRedisCommander()
-    .WithRedisInsight(c => c.WithAcceptEula());
-
-var garnet = builder.AddGarnet("garnet")
-    .WithDataVolume();
-
-var valkey = builder.AddValkey("valkey")
-    .WithDataVolume("valkey-data");
+var redis = builder.AddAzureRedis("redis")
+    .RunAsContainer(c =>
+    {
+        c.WithDataVolume()
+            .WithRedisCommander()
+            .WithRedisInsight(c => c.WithAcceptEula());
+    });
 
 builder.AddProject<Projects.Redis_ApiService>("apiservice")
-    .WithReference(redis).WaitFor(redis)
-    .WithReference(garnet).WaitFor(garnet)
-    .WithReference(valkey).WaitFor(valkey);
+    .WithExternalHttpEndpoints()
+    .WithReference(redis).WaitFor(redis);
 
 builder.Build().Run();
