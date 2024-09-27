@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsAspireHost>true</IsAspireHost>
+    <UserSecretsId>0b725946-79ad-4f35-a5c7-94e1d9eaf168</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,6 +16,7 @@
   <ItemGroup>
     <AspireProjectOrPackageReference Include="Aspire.Hosting.AppHost" />
     <AspireProjectOrPackageReference Include="Aspire.Hosting.PostgreSQL" />
+    <AspireProjectOrPackageReference Include="Aspire.Hosting.Azure.PostgreSQL" />
 
     <ProjectReference Include="..\PostgresEndToEnd.ApiService\PostgresEndToEnd.ApiService.csproj" />
   </ItemGroup>

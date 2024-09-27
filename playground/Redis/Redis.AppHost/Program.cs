@@ -1,20 +1,16 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var redis = builder.AddRedis("redis")
-    .WithDataVolume()
-    .WithRedisCommander()
-    .WithRedisInsight();
-
-var garnet = builder.AddGarnet("garnet")
-    .WithDataVolume();
-
-var valkey = builder.AddValkey("valkey")
-    .WithDataVolume("valkey-data");
+var cache = builder.AddAzureRedis("cache")
+    .RunAsContainer(c =>
+    {
+        c.WithDataVolume()
+            .WithRedisCommander()
+            .WithRedisInsight();
+    });
 
 builder.AddProject<Projects.Redis_ApiService>("apiservice")
-    .WithReference(redis).WaitFor(redis)
-    .WithReference(garnet).WaitFor(garnet)
-    .WithReference(valkey).WaitFor(valkey);
+    .WithExternalHttpEndpoints()
+    .WithReference(cache).WaitFor(cache);
 
 #if !SKIP_DASHBOARD_REFERENCE
 // This project is only added in playground projects to support development/debugging
