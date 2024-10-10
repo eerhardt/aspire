@@ -51,7 +51,7 @@ public static class AzureApplicationInsightsExtensions
     /// <param name="configureResource">Optional callback to configure the Application Insights resource.</param>
     /// <returns></returns>
     [Experimental("AZPROVISION001", UrlFormat = "https://aka.ms/dotnet/aspire/diagnostics#{0}")]
-    public static IResourceBuilder<AzureApplicationInsightsResource> AddAzureApplicationInsights(this IDistributedApplicationBuilder builder, [ResourceName] string name, Action<IResourceBuilder<AzureApplicationInsightsResource>, ResourceModuleConstruct, ApplicationInsightsComponent>? configureResource)
+    public static IResourceBuilder<AzureApplicationInsightsResource> AddAzureApplicationInsights(this IDistributedApplicationBuilder builder, [ResourceName] string name, Action<IResourceBuilder<AzureApplicationInsightsResource>, AzureResourceInfrastructure, ApplicationInsightsComponent>? configureResource)
     {
         return builder.AddAzureApplicationInsights(name, null, configureResource);
     }
@@ -65,11 +65,11 @@ public static class AzureApplicationInsightsExtensions
     /// <param name="configureResource">Optional callback to configure the Application Insights resource.</param>
     /// <returns></returns>
     [Experimental("AZPROVISION001", UrlFormat = "https://aka.ms/dotnet/aspire/diagnostics#{0}")]
-    public static IResourceBuilder<AzureApplicationInsightsResource> AddAzureApplicationInsights(this IDistributedApplicationBuilder builder, [ResourceName] string name, IResourceBuilder<AzureLogAnalyticsWorkspaceResource>? logAnalyticsWorkspace, Action<IResourceBuilder<AzureApplicationInsightsResource>, ResourceModuleConstruct, ApplicationInsightsComponent>? configureResource)
+    public static IResourceBuilder<AzureApplicationInsightsResource> AddAzureApplicationInsights(this IDistributedApplicationBuilder builder, [ResourceName] string name, IResourceBuilder<AzureLogAnalyticsWorkspaceResource>? logAnalyticsWorkspace, Action<IResourceBuilder<AzureApplicationInsightsResource>, AzureResourceInfrastructure, ApplicationInsightsComponent>? configureResource)
     {
         builder.AddAzureProvisioning();
 
-        var configureConstruct = (ResourceModuleConstruct construct) =>
+        var configureConstruct = (AzureResourceInfrastructure construct) =>
         {
             var appTypeParameter = new ProvisioningParameter("applicationType", typeof(string))
             {

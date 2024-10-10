@@ -40,11 +40,11 @@ public static class AzureStorageExtensions
     /// <param name="configureResource">Callback to configure the underlying <see cref="global::Azure.Provisioning.Storage.StorageAccount"/> resource.</param>
     /// <returns></returns>
     [Experimental("AZPROVISION001", UrlFormat = "https://aka.ms/dotnet/aspire/diagnostics#{0}")]
-    public static IResourceBuilder<AzureStorageResource> AddAzureStorage(this IDistributedApplicationBuilder builder, [ResourceName] string name, Action<IResourceBuilder<AzureStorageResource>, ResourceModuleConstruct, StorageAccount>? configureResource)
+    public static IResourceBuilder<AzureStorageResource> AddAzureStorage(this IDistributedApplicationBuilder builder, [ResourceName] string name, Action<IResourceBuilder<AzureStorageResource>, AzureResourceInfrastructure, StorageAccount>? configureResource)
     {
         builder.AddAzureProvisioning();
 
-        var configureConstruct = (ResourceModuleConstruct construct) =>
+        var configureConstruct = (AzureResourceInfrastructure construct) =>
         {
             var storageAccount = new StorageAccount(construct.Resource.GetBicepIdentifier())
             {

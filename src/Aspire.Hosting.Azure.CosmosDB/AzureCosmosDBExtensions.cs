@@ -39,14 +39,14 @@ public static class AzureCosmosExtensions
     /// </summary>
     /// <param name="builder">The <see cref="IDistributedApplicationBuilder"/>.</param>
     /// <param name="name">The name of the resource. This name will be used as the connection string name when referenced in a dependency.</param>
-    /// <param name="configureResource"></param>
+    /// <param name="configureInfrastructure"></param>
     /// <returns>A reference to the <see cref="IResourceBuilder{T}"/>.</returns>
     [Experimental("AZPROVISION001", UrlFormat = "https://aka.ms/dotnet/aspire/diagnostics#{0}")]
-    public static IResourceBuilder<AzureCosmosDBResource> AddAzureCosmosDB(this IDistributedApplicationBuilder builder, [ResourceName] string name, Action<IResourceBuilder<AzureCosmosDBResource>, ResourceModuleConstruct, CosmosDBAccount, IEnumerable<CosmosDBSqlDatabase>>? configureResource)
+    public static IResourceBuilder<AzureCosmosDBResource> AddAzureCosmosDB(this IDistributedApplicationBuilder builder, [ResourceName] string name, Action<IResourceBuilder<AzureCosmosDBResource>, AzureResourceInfrastructure, CosmosDBAccount, IEnumerable<CosmosDBSqlDatabase>>? configureInfrastructure)
     {
         builder.AddAzureProvisioning();
 
-        var configureConstruct = (ResourceModuleConstruct construct) =>
+        var configureConstruct = (AzureResourceInfrastructure construct) =>
         {
             var kvNameParam = new ProvisioningParameter("keyVaultName", typeof(string));
             construct.Add(kvNameParam);
@@ -104,7 +104,7 @@ public static class AzureCosmosExtensions
             };
             construct.Add(secret);
 
-            configureResource?.Invoke(azureResourceBuilder, construct, cosmosAccount, cosmosSqlDatabases);
+            configureInfrastructure?.Invoke(azureResourceBuilder, construct, cosmosAccount, cosmosSqlDatabases);
         };
 
         var resource = new AzureCosmosDBResource(name, configureConstruct);

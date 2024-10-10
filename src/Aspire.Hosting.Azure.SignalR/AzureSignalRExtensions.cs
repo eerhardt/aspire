@@ -35,11 +35,11 @@ public static class AzureSignalRExtensions
     /// <param name="configureResource">Callback to configure the underlying <see cref="global::Azure.Provisioning.SignalR.SignalRService"/> resource.</param>
     /// <returns>A reference to the <see cref="IResourceBuilder{T}"/>.</returns>
     [Experimental("AZPROVISION001", UrlFormat = "https://aka.ms/dotnet/aspire/diagnostics#{0}")]
-    public static IResourceBuilder<AzureSignalRResource> AddAzureSignalR(this IDistributedApplicationBuilder builder, [ResourceName] string name, Action<IResourceBuilder<AzureSignalRResource>, ResourceModuleConstruct, SignalRService>? configureResource)
+    public static IResourceBuilder<AzureSignalRResource> AddAzureSignalR(this IDistributedApplicationBuilder builder, [ResourceName] string name, Action<IResourceBuilder<AzureSignalRResource>, AzureResourceInfrastructure, SignalRService>? configureResource)
     {
         builder.AddAzureProvisioning();
 
-        var configureConstruct = (ResourceModuleConstruct construct) =>
+        var configureConstruct = (AzureResourceInfrastructure construct) =>
         {
             var service = new SignalRService(construct.Resource.GetBicepIdentifier())
             {

@@ -36,36 +36,34 @@ public static class AzureServiceBusExtensions
     /// <param name="configureResource">Callback to configure the underlying <see cref="global::Azure.Provisioning.ServiceBus.ServiceBusNamespace"/> resource.</param>
     /// <returns></returns>
     [Experimental("AZPROVISION001", UrlFormat = "https://aka.ms/dotnet/aspire/diagnostics#{0}")]
-    public static IResourceBuilder<AzureServiceBusResource> AddAzureServiceBus(this IDistributedApplicationBuilder builder, [ResourceName] string name, Action<IResourceBuilder<AzureServiceBusResource>, ResourceModuleConstruct, ServiceBusNamespace>? configureResource)
+    public static IResourceBuilder<AzureServiceBusResource> AddAzureServiceBus(this IDistributedApplicationBuilder builder, [ResourceName] string name, Action<IResourceBuilder<AzureServiceBusResource>, AzureResourceInfrastructure, ServiceBusNamespace>? configureResource)
     {
         builder.AddAzureProvisioning();
 
-        var configureConstruct = (ResourceModuleConstruct construct) =>
+        var configureConstruct = static (AzureResourceInfrastructure infrastructure) =>
         {
             var skuParameter = new ProvisioningParameter("sku", typeof(string))
             {
                 Value = new StringLiteral("Standard")
             };
-            construct.Add(skuParameter);
+            infrastructure.Add(skuParameter);
 
-            var serviceBusNamespace = new ServiceBusNamespace(construct.Resource.GetBicepIdentifier())
+            var serviceBusNamespace = new ServiceBusNamespace(infrastructure.Resource.GetBicepIdentifier())
             {
                 Sku = new ServiceBusSku()
                 {
                     Name = skuParameter
                 },
                 DisableLocalAuth = true,
-                Tags = { { "aspire-resource-name", construct.Resource.Name } }
+                Tags = { { "aspire-resource-name", infrastructure.Resource.Name } }
             };
-            construct.Add(serviceBusNamespace);
+            infrastructure.Add(serviceBusNamespace);
 
-            construct.Add(serviceBusNamespace.CreateRoleAssignment(ServiceBusBuiltInRole.AzureServiceBusDataOwner, construct.PrincipalTypeParameter, construct.PrincipalIdParameter));
+            infrastructure.Add(serviceBusNamespace.CreateRoleAssignment(ServiceBusBuiltInRole.AzureServiceBusDataOwner, infrastructure.PrincipalTypeParameter, infrastructure.PrincipalIdParameter));
 
-            construct.Add(new ProvisioningOutput("serviceBusEndpoint", typeof(string)) { Value = serviceBusNamespace.ServiceBusEndpoint });
+            infrastructure.Add(new ProvisioningOutput("serviceBusEndpoint", typeof(string)) { Value = serviceBusNamespace.ServiceBusEndpoint });
 
-            var azureResource = (AzureServiceBusResource)construct.Resource;
-            var azureResourceBuilder = builder.CreateResourceBuilder(azureResource);
-            configureResource?.Invoke(azureResourceBuilder, construct, serviceBusNamespace);
+            var azureResource = (AzureServiceBusResource)infrastructure.Resource;
 
             foreach (var queue in azureResource.Queues)
             {
@@ -74,8 +72,7 @@ public static class AzureServiceBusExtensions
                     Parent = serviceBusNamespace,
                     Name = queue.Name
                 };
-                construct.Add(queueResource);
-                queue.Configure?.Invoke(azureResourceBuilder, construct, queueResource);
+                infrastructure.Add(queueResource);
             }
             var topicDictionary = new Dictionary<string, ServiceBusTopic>();
             foreach (var topic in azureResource.Topics)
@@ -85,9 +82,8 @@ public static class AzureServiceBusExtensions
                     Parent = serviceBusNamespace,
                     Name = topic.Name
                 };
-                construct.Add(topicResource);
+                infrastructure.Add(topicResource);
                 topicDictionary.Add(topic.Name, topicResource);
-                topic.Configure?.Invoke(azureResourceBuilder, construct, topicResource);
             }
             foreach (var subscription in azureResource.Subscriptions)
             {
@@ -97,8 +93,7 @@ public static class AzureServiceBusExtensions
                     Parent = topic,
                     Name = subscription.Name
                 };
-                construct.Add(subscriptionResource);
-                subscription.Configure?.Invoke(azureResourceBuilder, construct, subscriptionResource);
+                infrastructure.Add(subscriptionResource);
             }
         };
 
@@ -145,7 +140,7 @@ public static class AzureServiceBusExtensions
     /// <param name="name">The name of the queue.</param>
     /// <param name="configureQueue">Callback to configure the underlying <see cref="global::Azure.Provisioning.ServiceBus.ServiceBusQueue"/> resource.</param>
     [Experimental("AZPROVISION001", UrlFormat = "https://aka.ms/dotnet/aspire/diagnostics#{0}")]
-    public static IResourceBuilder<AzureServiceBusResource> AddQueue(this IResourceBuilder<AzureServiceBusResource> builder, [ResourceName] string name, Action<IResourceBuilder<AzureServiceBusResource>, ResourceModuleConstruct, ServiceBusQueue>? configureQueue)
+    public static IResourceBuilder<AzureServiceBusResource> AddQueue(this IResourceBuilder<AzureServiceBusResource> builder, [ResourceName] string name, Action<IResourceBuilder<AzureServiceBusResource>, AzureResourceInfrastructure, ServiceBusQueue>? configureQueue)
     {
         builder.Resource.Queues.Add((name, configureQueue));
         return builder;
@@ -170,7 +165,7 @@ public static class AzureServiceBusExtensions
     /// <param name="name">The name of the topic.</param>
     /// <param name="configureTopic">Callback to configure the underlying <see cref="global::Azure.Provisioning.ServiceBus.ServiceBusTopic"/> resource.</param>
     [Experimental("AZPROVISION001", UrlFormat = "https://aka.ms/dotnet/aspire/diagnostics#{0}")]
-    public static IResourceBuilder<AzureServiceBusResource> AddTopic(this IResourceBuilder<AzureServiceBusResource> builder, [ResourceName] string name, Action<IResourceBuilder<AzureServiceBusResource>, ResourceModuleConstruct, ServiceBusTopic>? configureTopic)
+    public static IResourceBuilder<AzureServiceBusResource> AddTopic(this IResourceBuilder<AzureServiceBusResource> builder, [ResourceName] string name, Action<IResourceBuilder<AzureServiceBusResource>, AzureResourceInfrastructure, ServiceBusTopic>? configureTopic)
     {
         builder.Resource.Topics.Add((name, configureTopic));
         return builder;
@@ -197,7 +192,7 @@ public static class AzureServiceBusExtensions
     /// <param name="subscriptionName">The name of the subscription.</param>
     /// <param name="configureSubscription">Callback to configure the underlying <see cref="global::Azure.Provisioning.ServiceBus.ServiceBusSubscription"/> resource.</param>
     [Experimental("AZPROVISION001", UrlFormat = "https://aka.ms/dotnet/aspire/diagnostics#{0}")]
-    public static IResourceBuilder<AzureServiceBusResource> AddSubscription(this IResourceBuilder<AzureServiceBusResource> builder, string topicName, string subscriptionName, Action<IResourceBuilder<AzureServiceBusResource>, ResourceModuleConstruct, ServiceBusSubscription>? configureSubscription)
+    public static IResourceBuilder<AzureServiceBusResource> AddSubscription(this IResourceBuilder<AzureServiceBusResource> builder, string topicName, string subscriptionName, Action<IResourceBuilder<AzureServiceBusResource>, AzureResourceInfrastructure, ServiceBusSubscription>? configureSubscription)
     {
         builder.Resource.Subscriptions.Add((topicName, subscriptionName, configureSubscription));
         return builder;

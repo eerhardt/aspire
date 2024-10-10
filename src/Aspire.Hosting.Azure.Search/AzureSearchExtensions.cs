@@ -38,7 +38,7 @@ public static class AzureSearchExtensions
     public static IResourceBuilder<AzureSearchResource> AddAzureSearch(
         this IDistributedApplicationBuilder builder,
         string name,
-        Action<IResourceBuilder<AzureSearchResource>, ResourceModuleConstruct, SearchService>? configureResource)
+        Action<IResourceBuilder<AzureSearchResource>, AzureResourceInfrastructure, SearchService>? configureResource)
     {
         builder.AddAzureProvisioning();
 
@@ -48,7 +48,7 @@ public static class AzureSearchExtensions
                       .WithParameter(AzureBicepResource.KnownParameters.PrincipalType)
                       .WithManifestPublishingCallback(resource.WriteToManifest);
 
-        void ConfigureSearch(ResourceModuleConstruct construct)
+        void ConfigureSearch(AzureResourceInfrastructure construct)
         {
             var search = new SearchService(construct.Resource.GetBicepIdentifier())
             {

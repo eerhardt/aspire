@@ -34,14 +34,14 @@ public static class AzureOpenAIExtensions
     /// </summary>
     /// <param name="builder">The <see cref="IDistributedApplicationBuilder"/>.</param>
     /// <param name="name">The name of the resource. This name will be used as the connection string name when referenced in a dependency.</param>
-    /// <param name="configureResource">Callback to configure the underlying <see cref="global::Azure.Provisioning.CognitiveServices.CognitiveServicesAccount"/> resource.</param>
+    /// <param name="configureInfrastructure">Callback to configure the underlying <see cref="global::Azure.Provisioning.CognitiveServices.CognitiveServicesAccount"/> resource.</param>
     /// <returns>A reference to the <see cref="IResourceBuilder{T}"/>.</returns>
     [Experimental("AZPROVISION001", UrlFormat = "https://aka.ms/dotnet/aspire/diagnostics#{0}")]
-    public static IResourceBuilder<AzureOpenAIResource> AddAzureOpenAI(this IDistributedApplicationBuilder builder, [ResourceName] string name, Action<IResourceBuilder<AzureOpenAIResource>, ResourceModuleConstruct, CognitiveServicesAccount, IEnumerable<CognitiveServicesAccountDeployment>>? configureResource)
+    public static IResourceBuilder<AzureOpenAIResource> AddAzureOpenAI(this IDistributedApplicationBuilder builder, [ResourceName] string name, Action<IResourceBuilder<AzureOpenAIResource>, AzureResourceInfrastructure, CognitiveServicesAccount, IEnumerable<CognitiveServicesAccountDeployment>>? configureInfrastructure)
     {
         builder.AddAzureProvisioning();
 
-        var configureConstruct = (ResourceModuleConstruct construct) =>
+        var configureConstruct = (AzureResourceInfrastructure construct) =>
         {
             var cogServicesAccount = new CognitiveServicesAccount(construct.Resource.GetBicepIdentifier())
             {
@@ -120,7 +120,7 @@ public static class AzureOpenAIExtensions
             }
 
             var resourceBuilder = builder.CreateResourceBuilder(resource);
-            configureResource?.Invoke(resourceBuilder, construct, cogServicesAccount, cdkDeployments);
+            configureInfrastructure?.Invoke(resourceBuilder, construct, cogServicesAccount, cdkDeployments);
         };
 
         var resource = new AzureOpenAIResource(name, configureConstruct);

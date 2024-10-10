@@ -35,11 +35,11 @@ public static class AzureLogAnalyticsWorkspaceExtensions
     /// <param name="configureResource">Optional callback to configure the Azure Log Analytics Workspace resource.</param>
     /// <returns></returns>
     [Experimental("AZPROVISION001", UrlFormat = "https://aka.ms/dotnet/aspire/diagnostics#{0}")]
-    public static IResourceBuilder<AzureLogAnalyticsWorkspaceResource> AddAzureLogAnalyticsWorkspace(this IDistributedApplicationBuilder builder, [ResourceName] string name, Action<IResourceBuilder<AzureLogAnalyticsWorkspaceResource>, ResourceModuleConstruct, OperationalInsightsWorkspace>? configureResource)
+    public static IResourceBuilder<AzureLogAnalyticsWorkspaceResource> AddAzureLogAnalyticsWorkspace(this IDistributedApplicationBuilder builder, [ResourceName] string name, Action<IResourceBuilder<AzureLogAnalyticsWorkspaceResource>, AzureResourceInfrastructure, OperationalInsightsWorkspace>? configureResource)
     {
         builder.AddAzureProvisioning();
 
-        var configureConstruct = (ResourceModuleConstruct construct) =>
+        var configureConstruct = (AzureResourceInfrastructure construct) =>
         {
             var workspace = new OperationalInsightsWorkspace(construct.Resource.GetBicepIdentifier())
             {

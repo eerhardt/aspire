@@ -40,17 +40,17 @@ public static class AzureRedisExtensions
     /// <returns>A reference to the <see cref="IResourceBuilder{RedisResource}"/> builder.</returns>
     [Obsolete($"This method is obsolete and will be removed in a future version. Use {nameof(AddAzureRedis)} instead to add an Azure Cache for Redis resource.")]
     [Experimental("AZPROVISION001", UrlFormat = "https://aka.ms/dotnet/aspire/diagnostics#{0}")]
-    public static IResourceBuilder<RedisResource> PublishAsAzureRedis(this IResourceBuilder<RedisResource> builder, Action<IResourceBuilder<AzureRedisResource>, ResourceModuleConstruct, CdkRedisResource>? configureResource)
+    public static IResourceBuilder<RedisResource> PublishAsAzureRedis(this IResourceBuilder<RedisResource> builder, Action<IResourceBuilder<AzureRedisResource>, AzureResourceInfrastructure, CdkRedisResource>? configureResource)
     {
         return builder.PublishAsAzureRedisInternal(configureResource);
     }
 
     [Obsolete]
-    private static IResourceBuilder<RedisResource> PublishAsAzureRedisInternal(this IResourceBuilder<RedisResource> builder, Action<IResourceBuilder<AzureRedisResource>, ResourceModuleConstruct, CdkRedisResource>? configureResource, bool useProvisioner = false)
+    private static IResourceBuilder<RedisResource> PublishAsAzureRedisInternal(this IResourceBuilder<RedisResource> builder, Action<IResourceBuilder<AzureRedisResource>, AzureResourceInfrastructure, CdkRedisResource>? configureResource, bool useProvisioner = false)
     {
         builder.ApplicationBuilder.AddAzureProvisioning();
 
-        var configureConstruct = (ResourceModuleConstruct construct) =>
+        var configureConstruct = (AzureResourceInfrastructure construct) =>
         {
             var kvNameParam = new ProvisioningParameter("keyVaultName", typeof(string));
             construct.Add(kvNameParam);
@@ -117,7 +117,7 @@ public static class AzureRedisExtensions
     /// <returns>A reference to the <see cref="IResourceBuilder{RedisResource}"/> builder.</returns>
     [Obsolete($"This method is obsolete and will be removed in a future version. Use {nameof(AddAzureRedis)} instead to add an Azure Cache for Redis resource.")]
     [Experimental("AZPROVISION001", UrlFormat = "https://aka.ms/dotnet/aspire/diagnostics#{0}")]
-    public static IResourceBuilder<RedisResource> AsAzureRedis(this IResourceBuilder<RedisResource> builder, Action<IResourceBuilder<AzureRedisResource>, ResourceModuleConstruct, CdkRedisResource>? configureResource)
+    public static IResourceBuilder<RedisResource> AsAzureRedis(this IResourceBuilder<RedisResource> builder, Action<IResourceBuilder<AzureRedisResource>, AzureResourceInfrastructure, CdkRedisResource>? configureResource)
     {
         return builder.PublishAsAzureRedisInternal(configureResource, useProvisioner: true);
     }
@@ -154,7 +154,7 @@ public static class AzureRedisExtensions
     {
         builder.AddAzureProvisioning();
 
-        var configureConstruct = static (ResourceModuleConstruct construct) =>
+        var configureConstruct = static (AzureResourceInfrastructure construct) =>
         {
             var redis = CreateRedisResource(construct);
 
@@ -260,7 +260,7 @@ public static class AzureRedisExtensions
         return builder
            .RemoveActiveDirectoryParameters()
            .WithParameter(AzureBicepResource.KnownParameters.KeyVaultName)
-           .ConfigureConstruct(construct =>
+           .ConfigureInfrastructure(construct =>
            {
                RemoveActiveDirectoryAuthResources(construct);
 
@@ -293,7 +293,7 @@ public static class AzureRedisExtensions
            });
     }
 
-    private static CdkRedisResource CreateRedisResource(ResourceModuleConstruct construct)
+    private static CdkRedisResource CreateRedisResource(AzureResourceInfrastructure construct)
     {
         var redisCache = new CdkRedisResource(construct.Resource.GetBicepIdentifier())
         {
@@ -320,7 +320,7 @@ public static class AzureRedisExtensions
         return builder;
     }
 
-    private static void RemoveActiveDirectoryAuthResources(ResourceModuleConstruct construct)
+    private static void RemoveActiveDirectoryAuthResources(AzureResourceInfrastructure construct)
     {
         var resourcesToRemove = new List<Provisionable>();
         foreach (var resource in construct.GetResources())

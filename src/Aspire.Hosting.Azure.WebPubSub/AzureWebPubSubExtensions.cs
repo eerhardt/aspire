@@ -38,11 +38,11 @@ public static class AzureWebPubSubExtensions
     /// <param name="configureResource">Callback to configure the underlying <see cref="global::Azure.Provisioning.WebPubSub.WebPubSubService"/> resource.</param>
     /// <returns></returns>
     [Experimental("AZPROVISION001", UrlFormat = "https://aka.ms/dotnet/aspire/diagnostics#{0}")]
-    public static IResourceBuilder<AzureWebPubSubResource> AddAzureWebPubSub(this IDistributedApplicationBuilder builder, [ResourceName] string name, Action<IResourceBuilder<AzureWebPubSubResource>, ResourceModuleConstruct, WebPubSubService>? configureResource)
+    public static IResourceBuilder<AzureWebPubSubResource> AddAzureWebPubSub(this IDistributedApplicationBuilder builder, [ResourceName] string name, Action<IResourceBuilder<AzureWebPubSubResource>, AzureResourceInfrastructure, WebPubSubService>? configureResource)
     {
         builder.AddAzureProvisioning();
 
-        var configureConstruct = (ResourceModuleConstruct construct) =>
+        var configureConstruct = (AzureResourceInfrastructure construct) =>
         {
             // Supported values are Free_F1 Standard_S1 Premium_P1
             var skuParameter = new ProvisioningParameter("sku", typeof(string))

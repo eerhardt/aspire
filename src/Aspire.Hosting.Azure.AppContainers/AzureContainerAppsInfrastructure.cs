@@ -82,7 +82,7 @@ internal sealed class AzureContainerAppsInfrastructure(ILogger<AzureContainerApp
         {
             var context = await ProcessResourceAsync(resource, executionContext, cancellationToken).ConfigureAwait(false);
 
-            var construct = new AzureConstructResource(resource.Name, context.BuildContainerApp);
+            var construct = new AzureProvisioningResource(resource.Name, context.BuildContainerApp);
 
             construct.Annotations.Add(new ManifestPublishingCallbackAnnotation(c => context.WriteToManifest(c, construct)));
 
@@ -133,14 +133,14 @@ internal sealed class AzureContainerAppsInfrastructure(ILogger<AzureContainerApp
             public Dictionary<string, KeyVaultService> KeyVaultRefs { get; } = [];
             public Dictionary<string, KeyVaultSecret> KeyVaultSecretRefs { get; } = [];
 
-            public void WriteToManifest(ManifestPublishingContext context, AzureConstructResource construct)
+            public void WriteToManifest(ManifestPublishingContext context, AzureProvisioningResource construct)
             {
                 // Assert that the construct has no parameters
                 Debug.Assert(construct.Parameters.Count == 0);
 
                 construct.WriteToManifest(context);
 
-                // We're handling custom resource writing here instead of in the AzureConstructResource
+                // We're handling custom resource writing here instead of in the AzureProvisioningResource
                 // this is because we're tracking the ProvisioningParameter instances as we process the resource
                 if (Parameters.Count > 0)
                 {
@@ -156,7 +156,7 @@ internal sealed class AzureContainerAppsInfrastructure(ILogger<AzureContainerApp
                 }
             }
 
-            public void BuildContainerApp(ResourceModuleConstruct c)
+            public void BuildContainerApp(AzureResourceInfrastructure c)
             {
                 var containerAppIdParam = AllocateParameter(_containerAppEnvironmentContext.ContainerAppEnvironmentId);
 

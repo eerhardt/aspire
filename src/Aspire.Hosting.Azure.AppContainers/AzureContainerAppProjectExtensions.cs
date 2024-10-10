@@ -34,7 +34,7 @@ public static class AzureContainerAppProjectExtensions
     /// </code>
     /// </example>
     [Experimental("AZPROVISION001", UrlFormat = "https://aka.ms/dotnet/aspire/diagnostics#{0}")]
-    public static IResourceBuilder<T> PublishAsAzureContainerApp<T>(this IResourceBuilder<T> project, Action<ResourceModuleConstruct, ContainerApp> configure)
+    public static IResourceBuilder<T> PublishAsAzureContainerApp<T>(this IResourceBuilder<T> project, Action<AzureResourceInfrastructure, ContainerApp> configure)
         where T : ProjectResource
     {
         if (!project.ApplicationBuilder.ExecutionContext.IsPublishMode)

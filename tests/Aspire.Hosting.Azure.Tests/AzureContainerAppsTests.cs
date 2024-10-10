@@ -31,7 +31,7 @@ public class AzureContainerAppsTests(ITestOutputHelper output)
 
         container.TryGetLastAnnotation<DeploymentTargetAnnotation>(out var target);
 
-        var resource = target?.DeploymentTarget as AzureConstructResource;
+        var resource = target?.DeploymentTarget as AzureProvisioningResource;
 
         Assert.NotNull(resource);
 
@@ -123,7 +123,7 @@ public class AzureContainerAppsTests(ITestOutputHelper output)
 
         container.TryGetLastAnnotation<DeploymentTargetAnnotation>(out var target);
 
-        var resource = target?.DeploymentTarget as AzureConstructResource;
+        var resource = target?.DeploymentTarget as AzureProvisioningResource;
 
         Assert.NotNull(resource);
 
@@ -293,7 +293,7 @@ public class AzureContainerAppsTests(ITestOutputHelper output)
 
         container.TryGetLastAnnotation<DeploymentTargetAnnotation>(out var target);
 
-        var resource = target?.DeploymentTarget as AzureConstructResource;
+        var resource = target?.DeploymentTarget as AzureProvisioningResource;
 
         Assert.NotNull(resource);
 
@@ -549,7 +549,7 @@ public class AzureContainerAppsTests(ITestOutputHelper output)
 
         container.TryGetLastAnnotation<DeploymentTargetAnnotation>(out var target);
 
-        var resource = target?.DeploymentTarget as AzureConstructResource;
+        var resource = target?.DeploymentTarget as AzureProvisioningResource;
 
         Assert.NotNull(resource);
 
@@ -645,7 +645,7 @@ public class AzureContainerAppsTests(ITestOutputHelper output)
 
         container.TryGetLastAnnotation<DeploymentTargetAnnotation>(out var target);
 
-        var resource = target?.DeploymentTarget as AzureConstructResource;
+        var resource = target?.DeploymentTarget as AzureProvisioningResource;
 
         Assert.NotNull(resource);
 
@@ -796,7 +796,7 @@ public class AzureContainerAppsTests(ITestOutputHelper output)
 
         container.TryGetLastAnnotation<DeploymentTargetAnnotation>(out var target);
 
-        var resource = target?.DeploymentTarget as AzureConstructResource;
+        var resource = target?.DeploymentTarget as AzureProvisioningResource;
 
         Assert.NotNull(resource);
 
@@ -955,7 +955,7 @@ public class AzureContainerAppsTests(ITestOutputHelper output)
 
         container.TryGetLastAnnotation<DeploymentTargetAnnotation>(out var target);
 
-        var resource = target?.DeploymentTarget as AzureConstructResource;
+        var resource = target?.DeploymentTarget as AzureProvisioningResource;
 
         Assert.NotNull(resource);
 
@@ -1053,7 +1053,7 @@ public class AzureContainerAppsTests(ITestOutputHelper output)
 
         container.TryGetLastAnnotation<DeploymentTargetAnnotation>(out var target);
 
-        var resource = target?.DeploymentTarget as AzureConstructResource;
+        var resource = target?.DeploymentTarget as AzureProvisioningResource;
 
         Assert.NotNull(resource);
 
@@ -1158,7 +1158,7 @@ public class AzureContainerAppsTests(ITestOutputHelper output)
 
         container.TryGetLastAnnotation<DeploymentTargetAnnotation>(out var target);
 
-        var resource = target?.DeploymentTarget as AzureConstructResource;
+        var resource = target?.DeploymentTarget as AzureProvisioningResource;
 
         Assert.NotNull(resource);
 
@@ -1256,7 +1256,7 @@ public class AzureContainerAppsTests(ITestOutputHelper output)
 
         project.TryGetLastAnnotation<DeploymentTargetAnnotation>(out var target);
 
-        var resource = target?.DeploymentTarget as AzureConstructResource;
+        var resource = target?.DeploymentTarget as AzureProvisioningResource;
 
         Assert.NotNull(resource);
 

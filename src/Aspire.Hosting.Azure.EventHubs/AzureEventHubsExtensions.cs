@@ -43,11 +43,11 @@ public static class AzureEventHubsExtensions
     /// <returns></returns>
     [Experimental("AZPROVISION001", UrlFormat = "https://aka.ms/dotnet/aspire/diagnostics#{0}")]
     public static IResourceBuilder<AzureEventHubsResource> AddAzureEventHubs(this IDistributedApplicationBuilder builder, [ResourceName] string name,
-        Action<IResourceBuilder<AzureEventHubsResource>, ResourceModuleConstruct, EventHubsNamespace>? configureResource)
+        Action<IResourceBuilder<AzureEventHubsResource>, AzureResourceInfrastructure, EventHubsNamespace>? configureResource)
     {
         builder.AddAzureProvisioning();
 
-        var configureConstruct = (ResourceModuleConstruct construct) =>
+        var configureConstruct = (AzureResourceInfrastructure construct) =>
         {
             var skuParameter = new ProvisioningParameter("sku", typeof(string))
             {
@@ -113,7 +113,7 @@ public static class AzureEventHubsExtensions
     /// <param name="configureHub">Optional callback to customize the Event Hub.</param>
     [Experimental("AZPROVISION001", UrlFormat = "https://aka.ms/dotnet/aspire/diagnostics#{0}")]
     public static IResourceBuilder<AzureEventHubsResource> AddEventHub(this IResourceBuilder<AzureEventHubsResource> builder,
-        string name, Action<IResourceBuilder<AzureEventHubsResource>, ResourceModuleConstruct, EventHub>? configureHub)
+        string name, Action<IResourceBuilder<AzureEventHubsResource>, AzureResourceInfrastructure, EventHub>? configureHub)
     {
         builder.Resource.Hubs.Add((name, configureHub));
         return builder;

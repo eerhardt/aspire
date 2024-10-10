@@ -39,7 +39,7 @@ public static class AzureFunctionsProjectResourceExtensions
         {
             if (builder.ExecutionContext.IsPublishMode)
             {
-                var configureConstruct = (ResourceModuleConstruct construct) =>
+                var configureConstruct = (AzureResourceInfrastructure construct) =>
                 {
 #pragma warning disable AZPROVISION001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
                     var storageAccount = construct.GetResources().OfType<StorageAccount>().FirstOrDefault(r => r.IdentifierName == storageResourceName)
@@ -48,7 +48,7 @@ public static class AzureFunctionsProjectResourceExtensions
 #pragma warning restore AZPROVISION001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
                 };
                 storage = builder.AddAzureStorage(storageResourceName)
-                    .ConfigureConstruct(configureConstruct)
+                    .ConfigureInfrastructure(configureConstruct)
                     .RunAsEmulator().Resource;
             }
             else
