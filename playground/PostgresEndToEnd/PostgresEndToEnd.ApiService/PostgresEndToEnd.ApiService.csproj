@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>$(DefaultTargetFramework)</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
@@ -9,6 +9,19 @@
   <ItemGroup>
     <AspireProjectOrPackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
     <AspireProjectOrPackageReference Include="Aspire.Npgsql" />
+    <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" VersionOverride="9.0.0-rc.1.24511.1"/>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" VersionOverride="9.0.0-rc.2" />
+
+
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" VersionOverride="9.0.0-rc.2.24473.5" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" VersionOverride="9.0.0-rc.2.24473.5" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" VersionOverride="9.0.0-rc.2.24473.5" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" VersionOverride="9.0.0-rc.2.24473.5" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" VersionOverride="9.0.0-rc.2.24473.5" />
+    <PackageReference Include="Microsoft.Extensions.Logging" VersionOverride="9.0.0-rc.2.24473.5" />
+    <PackageReference Include="Microsoft.Extensions.Options" VersionOverride="9.0.0-rc.2.24473.5" />
+    <PackageReference Include="Microsoft.Extensions.Primitives" VersionOverride="9.0.0-rc.2.24473.5" />
+
     <PackageReference Include="Azure.Identity" />
     <ProjectReference Include="..\..\Playground.ServiceDefaults\Playground.ServiceDefaults.csproj" />
   </ItemGroup>
