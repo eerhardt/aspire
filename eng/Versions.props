@@ -41,15 +41,15 @@
     <MicrosoftDotNetBuildTasksWorkloadsPackageVersion>9.0.0-beta.24503.2</MicrosoftDotNetBuildTasksWorkloadsPackageVersion>
     <MicrosoftExtensionsHttpResiliencePackageVersion>8.9.1</MicrosoftExtensionsHttpResiliencePackageVersion>
     <MicrosoftExtensionsDiagnosticsTestingPackageVersion>8.9.1</MicrosoftExtensionsDiagnosticsTestingPackageVersion>
-    <MicrosoftExtensionsConfigurationAbstractionsPackageVersion>8.0.0</MicrosoftExtensionsConfigurationAbstractionsPackageVersion>
+    <MicrosoftExtensionsConfigurationAbstractionsPackageVersion>9.0.0-rtm.24511.16</MicrosoftExtensionsConfigurationAbstractionsPackageVersion>
     <MicrosoftExtensionsConfigurationBinderPackageVersion>8.0.2</MicrosoftExtensionsConfigurationBinderPackageVersion>
-    <MicrosoftExtensionsDependencyInjectionAbstractionsPackageVersion>8.0.1</MicrosoftExtensionsDependencyInjectionAbstractionsPackageVersion>
+    <MicrosoftExtensionsDependencyInjectionAbstractionsPackageVersion>9.0.0-rtm.24511.16</MicrosoftExtensionsDependencyInjectionAbstractionsPackageVersion>
     <MicrosoftExtensionsHostingAbstractionsPackageVersion>8.0.0</MicrosoftExtensionsHostingAbstractionsPackageVersion>
     <MicrosoftExtensionsHostingPackageVersion>8.0.0</MicrosoftExtensionsHostingPackageVersion>
     <MicrosoftExtensionsHttpPackageVersion>8.0.0</MicrosoftExtensionsHttpPackageVersion>
-    <MicrosoftExtensionsLoggingAbstractionsPackageVersion>8.0.1</MicrosoftExtensionsLoggingAbstractionsPackageVersion>
-    <MicrosoftExtensionsOptionsPackageVersion>8.0.2</MicrosoftExtensionsOptionsPackageVersion>
-    <MicrosoftExtensionsPrimitivesPackageVersion>8.0.0</MicrosoftExtensionsPrimitivesPackageVersion>
+    <MicrosoftExtensionsLoggingAbstractionsPackageVersion>9.0.0-rtm.24511.16</MicrosoftExtensionsLoggingAbstractionsPackageVersion>
+    <MicrosoftExtensionsOptionsPackageVersion>9.0.0-rtm.24511.16</MicrosoftExtensionsOptionsPackageVersion>
+    <MicrosoftExtensionsPrimitivesPackageVersion>9.0.0-rtm.24511.16</MicrosoftExtensionsPrimitivesPackageVersion>
     <MicrosoftAspNetCoreAuthenticationCertificatePackageVersion>8.0.8</MicrosoftAspNetCoreAuthenticationCertificatePackageVersion>
     <MicrosoftAspNetCoreAuthenticationJwtBearerPackageVersion>8.0.8</MicrosoftAspNetCoreAuthenticationJwtBearerPackageVersion>
     <MicrosoftAspNetCoreAuthenticationOpenIdConnectPackageVersion>8.0.8</MicrosoftAspNetCoreAuthenticationOpenIdConnectPackageVersion>
@@ -63,9 +63,9 @@
     <MicrosoftExtensionsTimeProviderTestingVersion>8.9.1</MicrosoftExtensionsTimeProviderTestingVersion>
     <!-- EF -->
     <MicrosoftEntityFrameworkCoreCosmosPackageVersion>8.0.8</MicrosoftEntityFrameworkCoreCosmosPackageVersion>
-    <MicrosoftEntityFrameworkCoreDesignPackageVersion>8.0.8</MicrosoftEntityFrameworkCoreDesignPackageVersion>
+    <MicrosoftEntityFrameworkCoreDesignPackageVersion>9.0.0-rtm.24514.19</MicrosoftEntityFrameworkCoreDesignPackageVersion>
     <MicrosoftEntityFrameworkCoreSqlServerPackageVersion>8.0.8</MicrosoftEntityFrameworkCoreSqlServerPackageVersion>
-    <MicrosoftEntityFrameworkCoreToolsPackageVersion>8.0.8</MicrosoftEntityFrameworkCoreToolsPackageVersion>
+    <MicrosoftEntityFrameworkCoreToolsPackageVersion>9.0.0-rtm.24514.19</MicrosoftEntityFrameworkCoreToolsPackageVersion>
     <MicrosoftNETRuntimeWorkloadTestingInternalVersion>9.0.0-preview.5.24272.3</MicrosoftNETRuntimeWorkloadTestingInternalVersion>
 
     <NpgsqlEntityFrameworkCorePostgreSQLPackageVersion>8.0.8</NpgsqlEntityFrameworkCorePostgreSQLPackageVersion>
@@ -76,17 +76,17 @@
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'net9.0'">
     <!-- Other -->
-    <MicrosoftExtensionsConfigurationAbstractionsPackageVersion>9.0.0-rc.1.24431.7</MicrosoftExtensionsConfigurationAbstractionsPackageVersion>
-    <MicrosoftExtensionsDependencyInjectionAbstractionsPackageVersion>9.0.0-rc.1.24431.7</MicrosoftExtensionsDependencyInjectionAbstractionsPackageVersion>
-    <MicrosoftExtensionsLoggingAbstractionsPackageVersion>9.0.0-rc.1.24431.7</MicrosoftExtensionsLoggingAbstractionsPackageVersion>
-    <MicrosoftExtensionsOptionsPackageVersion>9.0.0-rc.1.24431.7</MicrosoftExtensionsOptionsPackageVersion>
-    <MicrosoftExtensionsPrimitivesPackageVersion>9.0.0-rc.1.24431.7</MicrosoftExtensionsPrimitivesPackageVersion>
+    <MicrosoftExtensionsConfigurationAbstractionsPackageVersion>9.0.0-rtm.24511.16</MicrosoftExtensionsConfigurationAbstractionsPackageVersion>
+    <MicrosoftExtensionsDependencyInjectionAbstractionsPackageVersion>9.0.0-rtm.24511.16</MicrosoftExtensionsDependencyInjectionAbstractionsPackageVersion>
+    <MicrosoftExtensionsLoggingAbstractionsPackageVersion>9.0.0-rtm.24511.16</MicrosoftExtensionsLoggingAbstractionsPackageVersion>
+    <MicrosoftExtensionsOptionsPackageVersion>9.0.0-rtm.24511.16</MicrosoftExtensionsOptionsPackageVersion>
+    <MicrosoftExtensionsPrimitivesPackageVersion>9.0.0-rtm.24511.16</MicrosoftExtensionsPrimitivesPackageVersion>
 
     <!-- EF -->
-    <MicrosoftEntityFrameworkCoreCosmosPackageVersion>9.0.0-rc.1.24451.1</MicrosoftEntityFrameworkCoreCosmosPackageVersion>
-    <MicrosoftEntityFrameworkCoreDesignPackageVersion>9.0.0-rc.1.24451.1</MicrosoftEntityFrameworkCoreDesignPackageVersion>
-    <MicrosoftEntityFrameworkCoreSqlServerPackageVersion>9.0.0-rc.1.24451.1</MicrosoftEntityFrameworkCoreSqlServerPackageVersion>
-    <MicrosoftEntityFrameworkCoreToolsPackageVersion>9.0.0-rc.1.24451.1</MicrosoftEntityFrameworkCoreToolsPackageVersion>
+    <MicrosoftEntityFrameworkCoreCosmosPackageVersion>9.0.0-rtm.24514.19</MicrosoftEntityFrameworkCoreCosmosPackageVersion>
+    <MicrosoftEntityFrameworkCoreDesignPackageVersion>9.0.0-rtm.24514.19</MicrosoftEntityFrameworkCoreDesignPackageVersion>
+    <MicrosoftEntityFrameworkCoreSqlServerPackageVersion>9.0.0-rtm.24514.19</MicrosoftEntityFrameworkCoreSqlServerPackageVersion>
+    <MicrosoftEntityFrameworkCoreToolsPackageVersion>9.0.0-rtm.24514.19</MicrosoftEntityFrameworkCoreToolsPackageVersion>
 
     <NpgsqlEntityFrameworkCorePostgreSQLPackageVersion>9.0.0-rc.1</NpgsqlEntityFrameworkCorePostgreSQLPackageVersion>
   </PropertyGroup>
