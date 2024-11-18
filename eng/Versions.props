@@ -43,11 +43,11 @@
     <MicrosoftExtensionsDiagnosticsTestingPackageVersion>8.9.1</MicrosoftExtensionsDiagnosticsTestingPackageVersion>
     <MicrosoftExtensionsConfigurationAbstractionsPackageVersion>8.0.0</MicrosoftExtensionsConfigurationAbstractionsPackageVersion>
     <MicrosoftExtensionsConfigurationBinderPackageVersion>8.0.2</MicrosoftExtensionsConfigurationBinderPackageVersion>
-    <MicrosoftExtensionsDependencyInjectionAbstractionsPackageVersion>8.0.1</MicrosoftExtensionsDependencyInjectionAbstractionsPackageVersion>
-    <MicrosoftExtensionsHostingAbstractionsPackageVersion>8.0.0</MicrosoftExtensionsHostingAbstractionsPackageVersion>
-    <MicrosoftExtensionsHostingPackageVersion>8.0.0</MicrosoftExtensionsHostingPackageVersion>
+    <MicrosoftExtensionsDependencyInjectionAbstractionsPackageVersion>8.0.2</MicrosoftExtensionsDependencyInjectionAbstractionsPackageVersion>
+    <MicrosoftExtensionsHostingAbstractionsPackageVersion>8.0.1</MicrosoftExtensionsHostingAbstractionsPackageVersion>
+    <MicrosoftExtensionsHostingPackageVersion>8.0.1</MicrosoftExtensionsHostingPackageVersion>
     <MicrosoftExtensionsHttpPackageVersion>8.0.0</MicrosoftExtensionsHttpPackageVersion>
-    <MicrosoftExtensionsLoggingAbstractionsPackageVersion>8.0.1</MicrosoftExtensionsLoggingAbstractionsPackageVersion>
+    <MicrosoftExtensionsLoggingAbstractionsPackageVersion>8.0.2</MicrosoftExtensionsLoggingAbstractionsPackageVersion>
     <MicrosoftExtensionsOptionsPackageVersion>8.0.2</MicrosoftExtensionsOptionsPackageVersion>
     <MicrosoftExtensionsPrimitivesPackageVersion>8.0.0</MicrosoftExtensionsPrimitivesPackageVersion>
     <MicrosoftAspNetCoreAuthenticationCertificatePackageVersion>8.0.8</MicrosoftAspNetCoreAuthenticationCertificatePackageVersion>
@@ -63,8 +63,8 @@
     <MicrosoftExtensionsTimeProviderTestingVersion>8.9.1</MicrosoftExtensionsTimeProviderTestingVersion>
     <!-- EF -->
     <MicrosoftEntityFrameworkCoreCosmosPackageVersion>8.0.8</MicrosoftEntityFrameworkCoreCosmosPackageVersion>
-    <MicrosoftEntityFrameworkCoreDesignPackageVersion>8.0.8</MicrosoftEntityFrameworkCoreDesignPackageVersion>
-    <MicrosoftEntityFrameworkCoreSqlServerPackageVersion>8.0.8</MicrosoftEntityFrameworkCoreSqlServerPackageVersion>
+    <MicrosoftEntityFrameworkCoreDesignPackageVersion>9.0.0-rc.1.24451.1</MicrosoftEntityFrameworkCoreDesignPackageVersion>
+    <MicrosoftEntityFrameworkCoreSqlServerPackageVersion>9.0.0-rc.1.24451.1</MicrosoftEntityFrameworkCoreSqlServerPackageVersion>
     <MicrosoftEntityFrameworkCoreToolsPackageVersion>8.0.8</MicrosoftEntityFrameworkCoreToolsPackageVersion>
     <MicrosoftNETRuntimeWorkloadTestingInternalVersion>9.0.0-preview.5.24272.3</MicrosoftNETRuntimeWorkloadTestingInternalVersion>
 
