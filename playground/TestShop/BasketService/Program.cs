@@ -8,7 +8,8 @@ builder.Services.AddGrpc();
 builder.AddRedisClient("basketcache");
 builder.Services.AddTransient<IBasketRepository, RedisBasketRepository>();
 
-builder.AddRabbitMQClient("messaging");
+builder.AddAzureServiceBusClient("messaging");
+//builder.AddRabbitMQClient("messaging");
 
 var app = builder.Build();
 

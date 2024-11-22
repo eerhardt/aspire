@@ -26,10 +26,12 @@ var catalogService = builder.AddProject<Projects.CatalogService>("catalogservice
                             .WithReference(catalogDb)
                             .WithReplicas(2);
 
-var messaging = builder.AddRabbitMQ("messaging")
-                       .WithDataVolume()
-                       .WithManagementPlugin()
-                       .PublishAsContainer();
+var messaging = builder.AddAzureServiceBus("messaging")
+    .AddQueue("orders");
+//var messaging = builder.AddRabbitMQ("messaging")
+//                       .WithDataVolume()
+//                       .WithManagementPlugin()
+//                       .PublishAsContainer();
 
 var basketService = builder.AddProject("basketservice", @"..\BasketService\BasketService.csproj")
                            .WithReference(basketCache)
