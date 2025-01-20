@@ -36,9 +36,9 @@
     <MicrosoftNETRuntimeWorkloadTestingInternalVersion>9.0.0-preview.5.24272.3</MicrosoftNETRuntimeWorkloadTestingInternalVersion>
     <!-- dotnet/extensions -->
     <MicrosoftExtensionsAIVersion>9.0.1-preview.1.24570.5</MicrosoftExtensionsAIVersion>
-    <MicrosoftExtensionsHttpResilienceVersion>9.0.0</MicrosoftExtensionsHttpResilienceVersion>
-    <MicrosoftExtensionsDiagnosticsTestingVersion>9.0.0</MicrosoftExtensionsDiagnosticsTestingVersion>
-    <MicrosoftExtensionsTimeProviderTestingVersion>9.0.0</MicrosoftExtensionsTimeProviderTestingVersion>
+    <MicrosoftExtensionsHttpResilienceVersion>9.1.0</MicrosoftExtensionsHttpResilienceVersion>
+    <MicrosoftExtensionsDiagnosticsTestingVersion>9.1.0</MicrosoftExtensionsDiagnosticsTestingVersion>
+    <MicrosoftExtensionsTimeProviderTestingVersion>9.1.0</MicrosoftExtensionsTimeProviderTestingVersion>
     <!-- for templates -->
     <MicrosoftAspNetCorePackageVersionForNet9>9.0.0</MicrosoftAspNetCorePackageVersionForNet9>
   </PropertyGroup>
@@ -75,20 +75,20 @@
   <!-- .NET 8.0 Package Versions -->
   <PropertyGroup Label="LTS">
     <!-- EF -->
-    <MicrosoftEntityFrameworkCoreCosmosLTSVersion>8.0.11</MicrosoftEntityFrameworkCoreCosmosLTSVersion>
-    <MicrosoftEntityFrameworkCoreDesignLTSVersion>8.0.11</MicrosoftEntityFrameworkCoreDesignLTSVersion>
-    <MicrosoftEntityFrameworkCoreSqlServerLTSVersion>8.0.11</MicrosoftEntityFrameworkCoreSqlServerLTSVersion>
-    <MicrosoftEntityFrameworkCoreToolsLTSVersion>8.0.11</MicrosoftEntityFrameworkCoreToolsLTSVersion>
+    <MicrosoftEntityFrameworkCoreCosmosLTSVersion>8.0.12</MicrosoftEntityFrameworkCoreCosmosLTSVersion>
+    <MicrosoftEntityFrameworkCoreDesignLTSVersion>8.0.12</MicrosoftEntityFrameworkCoreDesignLTSVersion>
+    <MicrosoftEntityFrameworkCoreSqlServerLTSVersion>8.0.12</MicrosoftEntityFrameworkCoreSqlServerLTSVersion>
+    <MicrosoftEntityFrameworkCoreToolsLTSVersion>8.0.12</MicrosoftEntityFrameworkCoreToolsLTSVersion>
     <!-- ASP.NET Core -->
-    <MicrosoftAspNetCoreAuthenticationCertificateLTSVersion>8.0.11</MicrosoftAspNetCoreAuthenticationCertificateLTSVersion>
-    <MicrosoftAspNetCoreAuthenticationJwtBearerLTSVersion>8.0.11</MicrosoftAspNetCoreAuthenticationJwtBearerLTSVersion>
-    <MicrosoftAspNetCoreAuthenticationOpenIdConnectLTSVersion>8.0.11</MicrosoftAspNetCoreAuthenticationOpenIdConnectLTSVersion>
-    <MicrosoftAspNetCoreOutputCachingStackExchangeRedisLTSVersion>8.0.11</MicrosoftAspNetCoreOutputCachingStackExchangeRedisLTSVersion>
-    <MicrosoftAspNetCoreTestHostLTSVersion>8.0.11</MicrosoftAspNetCoreTestHostLTSVersion>
-    <MicrosoftExtensionsCachingStackExchangeRedisLTSVersion>8.0.11</MicrosoftExtensionsCachingStackExchangeRedisLTSVersion>
-    <MicrosoftExtensionsDiagnosticsHealthChecksEntityFrameworkCoreLTSVersion>8.0.11</MicrosoftExtensionsDiagnosticsHealthChecksEntityFrameworkCoreLTSVersion>
-    <MicrosoftExtensionsDiagnosticsHealthChecksLTSVersion>8.0.11</MicrosoftExtensionsDiagnosticsHealthChecksLTSVersion>
-    <MicrosoftExtensionsFeaturesLTSVersion>8.0.11</MicrosoftExtensionsFeaturesLTSVersion>
+    <MicrosoftAspNetCoreAuthenticationCertificateLTSVersion>8.0.12</MicrosoftAspNetCoreAuthenticationCertificateLTSVersion>
+    <MicrosoftAspNetCoreAuthenticationJwtBearerLTSVersion>8.0.12</MicrosoftAspNetCoreAuthenticationJwtBearerLTSVersion>
+    <MicrosoftAspNetCoreAuthenticationOpenIdConnectLTSVersion>8.0.12</MicrosoftAspNetCoreAuthenticationOpenIdConnectLTSVersion>
+    <MicrosoftAspNetCoreOutputCachingStackExchangeRedisLTSVersion>8.0.12</MicrosoftAspNetCoreOutputCachingStackExchangeRedisLTSVersion>
+    <MicrosoftAspNetCoreTestHostLTSVersion>8.0.12</MicrosoftAspNetCoreTestHostLTSVersion>
+    <MicrosoftExtensionsCachingStackExchangeRedisLTSVersion>8.0.12</MicrosoftExtensionsCachingStackExchangeRedisLTSVersion>
+    <MicrosoftExtensionsDiagnosticsHealthChecksEntityFrameworkCoreLTSVersion>8.0.12</MicrosoftExtensionsDiagnosticsHealthChecksEntityFrameworkCoreLTSVersion>
+    <MicrosoftExtensionsDiagnosticsHealthChecksLTSVersion>8.0.12</MicrosoftExtensionsDiagnosticsHealthChecksLTSVersion>
+    <MicrosoftExtensionsFeaturesLTSVersion>8.0.12</MicrosoftExtensionsFeaturesLTSVersion>
     <!-- Runtime -->
     <MicrosoftExtensionsHostingAbstractionsLTSVersion>8.0.1</MicrosoftExtensionsHostingAbstractionsLTSVersion>
     <MicrosoftExtensionsHostingLTSVersion>8.0.1</MicrosoftExtensionsHostingLTSVersion>
