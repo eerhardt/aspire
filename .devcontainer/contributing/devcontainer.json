@@ -41,11 +41,15 @@
 			"extensions": [
 				"ms-dotnettools.csdevkit",
 				"ms-azuretools.vscode-bicep",
-				"ms-azuretools.azure-dev"
+				"ms-azuretools.azure-dev",
+				"GitHub.copilot"
 			],
 			"settings": {
 				"remote.autoForwardPorts": true,
-				"remote.autoForwardPortsSource": "output",
+				"remote.autoForwardPortsSource": "hybrid",
+				"remote.otherPortsAttributes": {
+					"onAutoForward": "ignore"
+				},
 				"dotnet.defaultSolution": "Aspire.sln"
 			}
 		}
