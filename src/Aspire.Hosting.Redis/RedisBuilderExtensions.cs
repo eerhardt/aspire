@@ -319,6 +319,20 @@ public static class RedisBuilderExtensions
     }
 
     /// <summary>
+    /// Configures the host port that the Redis resource is exposed on.
+    /// </summary>
+    /// <param name="builder">The Redis resource builder.</param>
+    /// <param name="port">The port to bind on the host. If <see langword="null"/> is used random port will be assigned.</param>
+    /// <returns>The <see cref="IResourceBuilder{T}"/>.</returns>
+    public static IResourceBuilder<RedisResource> WithHostPort(this IResourceBuilder<RedisResource> builder, int? port)
+    {
+        return builder.WithEndpoint(RedisResource.PrimaryEndpointName, endpoint =>
+        {
+            endpoint.Port = port;
+        });
+    }
+
+    /// <summary>
     /// Configures the host port that the Redis Commander resource is exposed on instead of using randomly assigned port.
     /// </summary>
     /// <param name="builder">The resource builder for Redis Commander.</param>

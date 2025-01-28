@@ -63,7 +63,7 @@ public static class SqlServerBuilderExtensions
     /// <summary>
     /// Adds a SQL Server database to the application model. This is a child resource of a <see cref="SqlServerServerResource"/>.
     /// </summary>
-    /// <param name="builder">The SQL Server resource builders.</param>
+    /// <param name="builder">The SQL Server resource builder.</param>
     /// <param name="name">The name of the resource. This name will be used as the connection string name when referenced in a dependency.</param>
     /// <param name="databaseName">The name of the database. If not provided, this defaults to the same value as <paramref name="name"/>.</param>
     /// <returns>A reference to the <see cref="IResourceBuilder{T}"/>.</returns>
@@ -78,6 +78,20 @@ public static class SqlServerBuilderExtensions
         builder.Resource.AddDatabase(name, databaseName);
         var sqlServerDatabase = new SqlServerDatabaseResource(name, databaseName, builder.Resource);
         return builder.ApplicationBuilder.AddResource(sqlServerDatabase);
+    }
+
+    /// <summary>
+    /// Configures the host port that the SQL Server resource is exposed on.
+    /// </summary>
+    /// <param name="builder">The SQL Server resource builder.</param>
+    /// <param name="port">The port to bind on the host. If <see langword="null"/> is used random port will be assigned.</param>
+    /// <returns>The <see cref="IResourceBuilder{T}"/>.</returns>
+    public static IResourceBuilder<SqlServerServerResource> WithHostPort(this IResourceBuilder<SqlServerServerResource> builder, int? port)
+    {
+        return builder.WithEndpoint(SqlServerServerResource.PrimaryEndpointName, endpoint =>
+        {
+            endpoint.Port = port;
+        });
     }
 
     /// <summary>

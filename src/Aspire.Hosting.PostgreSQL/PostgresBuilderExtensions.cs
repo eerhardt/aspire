@@ -213,6 +213,20 @@ public static class PostgresBuilderExtensions
     }
 
     /// <summary>
+    /// Configures the host port that the PostgreSQL resource is exposed on.
+    /// </summary>
+    /// <param name="builder">The PostgreSQL server resource builder.</param>
+    /// <param name="port">The port to bind on the host. If <see langword="null"/> is used random port will be assigned.</param>
+    /// <returns>The <see cref="IResourceBuilder{T}"/>.</returns>
+    public static IResourceBuilder<PostgresServerResource> WithHostPort(this IResourceBuilder<PostgresServerResource> builder, int? port)
+    {
+        return builder.WithEndpoint(PostgresServerResource.PrimaryEndpointName, endpoint =>
+        {
+            endpoint.Port = port;
+        });
+    }
+
+    /// <summary>
     /// Configures the host port that the PGAdmin resource is exposed on instead of using randomly assigned port.
     /// </summary>
     /// <param name="builder">The resource builder for PGAdmin.</param>

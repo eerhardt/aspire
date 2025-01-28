@@ -130,8 +130,6 @@ public static class AzureSqlExtensions
     /// </summary>
     /// <param name="builder">The builder for the Azure SQL resource.</param>
     /// <param name="configureContainer">Callback that exposes underlying container to allow for customization.</param>
-    /// <param name="password">The parameter used to provide the administrator password for the SQL Server resource. If <see langword="null"/> a random password will be generated.</param>
-    /// <param name="port">The host port for the SQL Server.</param>
     /// <returns>A reference to the <see cref="IResourceBuilder{AzureSqlServerResource}"/> builder.</returns>
     /// <example>
     /// The following example creates an Azure SQL Database (server) resource that runs locally in a
@@ -148,7 +146,7 @@ public static class AzureSqlExtensions
     /// builder.Build().Run();
     /// </code>
     /// </example>
-    public static IResourceBuilder<AzureSqlServerResource> RunAsContainer(this IResourceBuilder<AzureSqlServerResource> builder, Action<IResourceBuilder<SqlServerServerResource>>? configureContainer = null, IResourceBuilder<ParameterResource>? password = null, int? port = null)
+    public static IResourceBuilder<AzureSqlServerResource> RunAsContainer(this IResourceBuilder<AzureSqlServerResource> builder, Action<IResourceBuilder<SqlServerServerResource>>? configureContainer = null)
     {
         if (builder.ApplicationBuilder.ExecutionContext.IsPublishMode)
         {
@@ -163,7 +161,7 @@ public static class AzureSqlExtensions
 
         RemoveAzureResources(builder.ApplicationBuilder, azureResource, azureDatabases);
 
-        var sqlContainer = builder.ApplicationBuilder.AddSqlServer(azureResource.Name, password, port);
+        var sqlContainer = builder.ApplicationBuilder.AddSqlServer(azureResource.Name);
 
         azureResource.SetInnerResource(sqlContainer.Resource);
 

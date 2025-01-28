@@ -1,2 +1,2 @@
 #nullable enable
-
+static Aspire.Hosting.SqlServerBuilderExtensions.WithHostPort(this Aspire.Hosting.ApplicationModel.IResourceBuilder<Aspire.Hosting.ApplicationModel.SqlServerServerResource!>! builder, int? port) -> Aspire.Hosting.ApplicationModel.IResourceBuilder<Aspire.Hosting.ApplicationModel.SqlServerServerResource!>!
