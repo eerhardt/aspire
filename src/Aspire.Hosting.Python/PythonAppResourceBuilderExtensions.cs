@@ -136,7 +136,7 @@ public static class PythonAppResourceBuilderExtensions
                 AddOpenTelemetryArguments(context);
 
                 // Add the python executable as the next argument so we can run the project.
-                context.Args.Add(pythonExecutable!);
+                context.Args.Add($"\"{pythonExecutable}\"");
             }
 
             AddProjectArguments(scriptPath, scriptArgs, context);
