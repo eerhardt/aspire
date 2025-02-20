@@ -9,35 +9,35 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 
 builder.AddSqlServerDbContext<MyDb1Context>("db1");
-builder.AddSqlServerDbContext<MyDb2Context>("db2");
+//builder.AddSqlServerDbContext<MyDb2Context>("db2");
 
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
-app.MapGet("/", async (MyDb1Context db1Context, MyDb2Context db2Context) =>
+app.MapGet("/", async (MyDb1Context db1Context) => //, MyDb2Context db2Context) =>
 {
     // You wouldn't normally do this on every call,
     // but doing it here just to make this simple.
 
     await db1Context.Database.EnsureCreatedAsync();
-    await db2Context.Database.EnsureCreatedAsync();
+    //await db2Context.Database.EnsureCreatedAsync();
 
     var entry1 = new Entry();
     await db1Context.Entries.AddAsync(entry1);
     await db1Context.SaveChangesAsync();
 
     var entry2 = new Entry();
-    await db2Context.Entries.AddAsync(entry2);
-    await db2Context.SaveChangesAsync();
+    //await db2Context.Entries.AddAsync(entry2);
+    //await db2Context.SaveChangesAsync();
 
     var entries1 = await db1Context.Entries.ToListAsync();
-    var entries2 = await db2Context.Entries.ToListAsync();
+    //var entries2 = await db2Context.Entries.ToListAsync();
 
     return new
     {
-        totalEntries = entries1.Count + entries2.Count,
+        totalEntries = entries1.Count, //+ entries2.Count,
         entries1 = entries1,
-        entries2 = entries2
+        //entries2 = entries2
     };
 });
 

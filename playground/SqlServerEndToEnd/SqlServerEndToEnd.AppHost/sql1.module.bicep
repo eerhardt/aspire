@@ -5,24 +5,17 @@ param principalId string
 
 param principalName string
 
-resource sql1 'Microsoft.Sql/servers@2021-11-01' = {
-  name: take('sql1-${uniqueString(resourceGroup().id)}', 63)
-  location: location
+resource sql1 'Microsoft.Sql/servers@2021-11-01' existing = {
+  name: 'sql1-yfs36ajuaysoy'
+}
+
+resource sql1_admin 'Microsoft.Sql/servers/administrators@2021-11-01' = {
+  name: 'ActiveDirectory'
   properties: {
-    administrators: {
-      administratorType: 'ActiveDirectory'
-      login: principalName
-      sid: principalId
-      tenantId: subscription().tenantId
-      azureADOnlyAuthentication: true
-    }
-    minimalTlsVersion: '1.2'
-    publicNetworkAccess: 'Enabled'
-    version: '12.0'
+    login: principalName
+    sid: principalId
   }
-  tags: {
-    'aspire-resource-name': 'sql1'
-  }
+  parent: sql1
 }
 
 resource sqlFirewallRule_AllowAllAzureIps 'Microsoft.Sql/servers/firewallRules@2021-11-01' = {

@@ -4,23 +4,25 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
 var sql1 = builder.AddAzureSqlServer("sql1")
-                  .RunAsContainer();
+                .RunAsExisting("sql1-yfs36ajuaysoy", "cosmos3-cosmosendtoendapphost-4ca6a491")
+                .PublishAsExisting("sql1-yfs36ajuaysoy", "cosmos3-cosmosendtoendapphost-4ca6a491");
+                  //.RunAsContainer();
 
 var db1 = sql1.AddDatabase("db1");
 
-var sql2 = builder.AddSqlServer("sql2")
-                  .PublishAsContainer();
+//var sql2 = builder.AddSqlServer("sql2")
+//                  .PublishAsContainer();
 
-var db2 = sql2.AddDatabase("db2");
+//var db2 = sql2.AddDatabase("db2");
 
 var dbsetup = builder.AddProject<Projects.SqlServerEndToEnd_DbSetup>("dbsetup")
-                     .WithReference(db1).WaitFor(sql1)
-                     .WithReference(db2).WaitFor(sql2);
+                     .WithReference(db1).WaitFor(sql1);
+                     //.WithReference(db2).WaitFor(sql2);
 
 builder.AddProject<Projects.SqlServerEndToEnd_ApiService>("api")
        .WithExternalHttpEndpoints()
        .WithReference(db1).WaitFor(db1)
-       .WithReference(db2).WaitFor(db2)
+       //.WithReference(db2).WaitFor(db2)
        .WaitForCompletion(dbsetup);
 
 #if !SKIP_DASHBOARD_REFERENCE

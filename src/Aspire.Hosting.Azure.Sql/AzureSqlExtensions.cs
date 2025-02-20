@@ -5,6 +5,7 @@ using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.Azure;
 using Azure.Provisioning;
 using Azure.Provisioning.Expressions;
+using Azure.Provisioning.Primitives;
 using Azure.Provisioning.Sql;
 
 namespace Aspire.Hosting;
@@ -205,14 +206,6 @@ public static class AzureSqlExtensions
         {
             var resource = SqlServer.FromExisting(identifier);
             resource.Name = name;
-            resource.Administrators = new ServerExternalAdministrator()
-            {
-                AdministratorType = SqlAdministratorType.ActiveDirectory,
-                IsAzureADOnlyAuthenticationEnabled = true,
-                Sid = principalIdParameter,
-                Login = principalNameParameter,
-                TenantId = BicepFunction.GetSubscription().TenantId
-            };
             return resource;
         },
         (infrastructure) =>
@@ -234,6 +227,15 @@ public static class AzureSqlExtensions
             };
         });
 
+        if (sqlServer.IsExistingResource)
+        {
+            var admin = new SqlServerAzureADAdministratorWorkaround($"{sqlServer.BicepIdentifier}_admin");
+            admin.ParentOverride = sqlServer;
+            admin.LoginOverride = principalNameParameter;
+            admin.SidOverride = principalIdParameter;
+            infrastructure.Add(admin);
+        }
+
         infrastructure.Add(new SqlFirewallRule("sqlFirewallRule_AllowAllAzureIps")
         {
             Parent = sqlServer,
@@ -244,11 +246,14 @@ public static class AzureSqlExtensions
 
         if (distributedApplicationBuilder.ExecutionContext.IsRunMode)
         {
-            // When in run mode we inject the users identity and we need to specify
-            // the principalType.
-            var principalTypeParameter = new ProvisioningParameter(AzureBicepResource.KnownParameters.PrincipalType, typeof(string));
-            infrastructure.Add(principalTypeParameter);
-            sqlServer.Administrators.PrincipalType = principalTypeParameter;
+            if (!sqlServer.IsExistingResource)
+            {
+                // When in run mode we inject the users identity and we need to specify
+                // the principalType.
+                var principalTypeParameter = new ProvisioningParameter(AzureBicepResource.KnownParameters.PrincipalType, typeof(string));
+                infrastructure.Add(principalTypeParameter);
+                sqlServer.Administrators.PrincipalType = principalTypeParameter;
+            }
 
             infrastructure.Add(new SqlFirewallRule("sqlFirewallRule_AllowAllIps")
             {
@@ -272,5 +277,82 @@ public static class AzureSqlExtensions
         }
 
         infrastructure.Add(new ProvisioningOutput("sqlServerFqdn", typeof(string)) { Value = sqlServer.FullyQualifiedDomainName });
+    }
+
+    private sealed class SqlServerAzureADAdministratorWorkaround : SqlServerAzureADAdministrator
+    {
+        private BicepValue<string>? _name;
+        private BicepValue<string>? _login;
+        private BicepValue<Guid>? _sid;
+        private ResourceReference<SqlServer>? _parent;
+
+        public SqlServerAzureADAdministratorWorkaround(string bicepIdentifier)
+            : base(bicepIdentifier)
+        {
+        }
+
+        //
+        // Summary:
+        //     Login name of the server administrator.
+        public BicepValue<string> LoginOverride
+        {
+            get
+            {
+                Initialize();
+                return _login!;
+            }
+            set
+            {
+                Initialize();
+                _login!.Assign(value);
+            }
+        }
+
+        //
+        // Summary:
+        //     SID (object ID) of the server administrator.
+        public BicepValue<Guid> SidOverride
+        {
+            get
+            {
+                Initialize();
+                return _sid!;
+            }
+            set
+            {
+                Initialize();
+                _sid!.Assign(value);
+            }
+        }
+
+        //
+        // Summary:
+        //     Gets or sets a reference to the parent SqlServer.
+        public SqlServer? ParentOverride
+        {
+            get
+            {
+                Initialize();
+                return _parent!.Value;
+            }
+            set
+            {
+                Initialize();
+                _parent!.Value = value;
+            }
+        }
+
+        private static BicepValue<string> GetNameDefaultValue()
+        {
+            return new StringLiteralExpression("ActiveDirectory");
+        }
+
+        protected override void DefineProvisionableProperties()
+        {
+            _name = DefineProperty("Name", new string[1] { "name" }, defaultValue: GetNameDefaultValue());
+            _login = DefineProperty<string>("Login", new string[2] { "properties", "login" });
+            _sid = DefineProperty<Guid>("Sid", new string[2] { "properties", "sid" });
+            _parent = DefineResource<SqlServer>("Parent", new string[1] { "parent" }, isOutput: false, isRequired: true);
+        }
     }
 }
