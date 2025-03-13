@@ -70,11 +70,7 @@
     "account": {
       "type": "azure.bicep.v0",
       "connectionString": "{account.outputs.connectionString}",
-      "path": "account.module.bicep",
-      "params": {
-        "principalType": "",
-        "principalId": ""
-      }
+      "path": "account.module.bicep"
     },
     "db": {
       "type": "value.v0",
@@ -157,7 +153,8 @@
       "type": "azure.bicep.v0",
       "path": "api-roles.module.bicep",
       "params": {
-        "storage_outputs_name": "{storage.outputs.name}"
+        "storage_outputs_name": "{storage.outputs.name}",
+        "account_outputs_name": "{account.outputs.name}"
       }
     },
     "cache-password": {

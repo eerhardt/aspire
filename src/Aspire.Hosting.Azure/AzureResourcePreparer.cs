@@ -153,6 +153,22 @@ internal sealed class AzureResourcePreparer(
                             resource.Annotations.Add(new RoleAssignmentAnnotation(azureReference, defaults.Roles));
                         }
                     }
+
+                    // In PublishMode, if the Azure resource has a RoleAssignmentCustomizationAnnotation, we need to add it to the compute resource
+                    // so the publish infrastructure can apply it.
+                    if (executionContext.IsPublishMode)
+                    {
+                        if (azureReference.TryGetAnnotationsOfType<RoleAssignmentCustomizationAnnotation>(out var customizationAnnotations))
+                        {
+                            foreach (var customizationAnnotation in customizationAnnotations)
+                            {
+                                resource.Annotations.Add(new RoleAssignmentCustomizationAnnotation(customizationAnnotation.Configure)
+                                {
+                                    Target = azureReference
+                                });
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -256,7 +272,7 @@ internal sealed class AzureResourcePreparer(
         }
         else
         {
-            resource.Annotations.Add(new AppliedRoleAssignmentsAnnotation([..newRoles]));
+            resource.Annotations.Add(new AppliedRoleAssignmentsAnnotation([.. newRoles]));
         }
     }
 }
