@@ -451,8 +451,17 @@ public static class AzureCosmosExtensions
 
         var cosmosAccount = GetOrAddExistingCosmosDBResource(infra, azureResource);
 
-        var (principalId, uniqueId) = GetPrincipalId(infra);
-        AddContributorRoleAssignment(infra, cosmosAccount, principalId, uniqueId);
+        var (principalId, identity) = GetPrincipalId(infra);
+
+        // if there is no identity, the principalId must be a parameter, so it can be used as the uniqueId
+        BicepValue<string> uniqueId = identity?.Id ?? (BicepValue<string>)principalId;
+        var roleAssignment = AddContributorRoleAssignment(infra, cosmosAccount, principalId, uniqueId);
+
+        if (identity != null)
+        {
+            // CosmosDB RoleAssignments will fail if the identity is not created first
+            roleAssignment.DependsOn.Add(identity);
+        }
     }
 
     private static CosmosDBAccount GetOrAddExistingCosmosDBResource(AzureResourceInfrastructure infra, AzureCosmosDBResource azureResource)
@@ -469,42 +478,43 @@ public static class AzureCosmosExtensions
         return existingResource;
     }
 
-    private static (BicepValue<Guid> PrincipalId, BicepValue<string> UniqueId) GetPrincipalId(AzureResourceInfrastructure infra)
+    private static (BicepValue<Guid> PrincipalId, UserAssignedIdentity? identity) GetPrincipalId(AzureResourceInfrastructure infra)
     {
         if (infra.GetProvisionableResources()
             .OfType<UserAssignedIdentity>()
             .SingleOrDefault() is { } identity)
         {
-            return (identity.PrincipalId, identity.Id);
+            return (identity.PrincipalId, identity);
         }
 
         if (infra.GetProvisionableResources()
             .OfType<ProvisioningParameter>()
             .SingleOrDefault(p => p.BicepIdentifier == AzureBicepResource.KnownParameters.PrincipalId) is { } principalIdParameter)
         {
-            // for parameters, return the parameter as the principalId AND as the uniqueId
             var principalId = (BicepValue<Guid>)principalIdParameter;
-            return (principalId, principalId);
+            return (principalId, null);
         }
 
         throw new InvalidOperationException($"Could not resolve a principalId.");
     }
 
-    private static void AddContributorRoleAssignment(AzureResourceInfrastructure infra, CosmosDBAccount cosmosAccount, BicepValue<Guid> principalId, BicepValue<string> uniqueId)
+    private static CosmosDBSqlRoleAssignment_Derived AddContributorRoleAssignment(AzureResourceInfrastructure infra, CosmosDBAccount cosmosAccount, BicepValue<Guid> principalId, BicepValue<string> uniqueId)
     {
         var roleDefinition = CosmosDBSqlRoleDefinition_Derived.FromExisting(cosmosAccount.BicepIdentifier + "_roleDefinition");
         roleDefinition.Parent = cosmosAccount;
         roleDefinition.NameOverride = "00000000-0000-0000-0000-000000000002"; // data plane contributor role
         infra.Add(roleDefinition);
 
-        infra.Add(new CosmosDBSqlRoleAssignment_Derived(cosmosAccount.BicepIdentifier + "_roleAssignment")
+        var roleAssignment = new CosmosDBSqlRoleAssignment_Derived(cosmosAccount.BicepIdentifier + "_roleAssignment")
         {
             NameOverride = BicepFunction.CreateGuid(uniqueId, roleDefinition.Id, cosmosAccount.Id),
             Parent = cosmosAccount,
             Scope = cosmosAccount.Id,
             RoleDefinitionId = roleDefinition.Id,
             PrincipalId = principalId
-        });
+        };
+        infra.Add(roleAssignment);
+        return roleAssignment;
     }
 }
 
