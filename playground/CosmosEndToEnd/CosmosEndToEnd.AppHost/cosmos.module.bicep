@@ -1,6 +1,8 @@
 @description('The location for the resource(s) to be deployed.')
 param location string = resourceGroup().location
 
+param keyVaultName string
+
 resource cosmos 'Microsoft.DocumentDB/databaseAccounts@2024-08-15' = {
   name: take('cosmos-${uniqueString(resourceGroup().id)}', 44)
   location: location
@@ -15,7 +17,7 @@ resource cosmos 'Microsoft.DocumentDB/databaseAccounts@2024-08-15' = {
       defaultConsistencyLevel: 'Session'
     }
     databaseAccountOfferType: 'Standard'
-    disableLocalAuth: true
+    disableLocalAuth: false
   }
   kind: 'GlobalDocumentDB'
   tags: {
@@ -66,6 +68,40 @@ resource users 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@20
   parent: db
 }
 
-output connectionString string = cosmos.properties.documentEndpoint
+resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
+  name: keyVaultName
+}
+
+resource connectionString 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
+  name: 'connectionstrings--cosmos'
+  properties: {
+    value: 'AccountEndpoint=${cosmos.properties.documentEndpoint};AccountKey=${cosmos.listKeys().primaryMasterKey}'
+  }
+  parent: keyVault
+}
+
+resource db_connectionString 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
+  name: 'connectionstrings--db'
+  properties: {
+    value: 'AccountEndpoint=${cosmos.properties.documentEndpoint};AccountKey=${cosmos.listKeys().primaryMasterKey};Database=db'
+  }
+  parent: keyVault
+}
+
+resource entries_connectionString 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
+  name: 'connectionstrings--entries'
+  properties: {
+    value: 'AccountEndpoint=${cosmos.properties.documentEndpoint};AccountKey=${cosmos.listKeys().primaryMasterKey};Database=db;Container=staging-entries'
+  }
+  parent: keyVault
+}
+
+resource users_connectionString 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
+  name: 'connectionstrings--users'
+  properties: {
+    value: 'AccountEndpoint=${cosmos.properties.documentEndpoint};AccountKey=${cosmos.listKeys().primaryMasterKey};Database=db;Container=users'
+  }
+  parent: keyVault
+}
 
 output name string = cosmos.name

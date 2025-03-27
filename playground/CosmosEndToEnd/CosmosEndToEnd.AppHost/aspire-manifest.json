@@ -3,20 +3,28 @@
   "resources": {
     "cosmos": {
       "type": "azure.bicep.v0",
-      "connectionString": "{cosmos.outputs.connectionString}",
-      "path": "cosmos.module.bicep"
+      "connectionString": "{cosmos-kv.secrets.connectionstrings--cosmos}",
+      "path": "cosmos.module.bicep",
+      "params": {
+        "keyVaultName": "{cosmos-kv.outputs.name}"
+      }
+    },
+    "cosmos-kv": {
+      "type": "azure.bicep.v0",
+      "connectionString": "{cosmos-kv.outputs.vaultUri}",
+      "path": "cosmos-kv.module.bicep"
     },
     "db": {
       "type": "value.v0",
-      "connectionString": "AccountEndpoint={cosmos.outputs.connectionString};Database=db"
+      "connectionString": "{cosmos-kv.secrets.connectionstrings--db}"
     },
     "entries": {
       "type": "value.v0",
-      "connectionString": "AccountEndpoint={cosmos.outputs.connectionString};Database=db;Container=staging-entries"
+      "connectionString": "{cosmos-kv.secrets.connectionstrings--entries}"
     },
     "users": {
       "type": "value.v0",
-      "connectionString": "AccountEndpoint={cosmos.outputs.connectionString};Database=db;Container=users"
+      "connectionString": "{cosmos-kv.secrets.connectionstrings--users}"
     },
     "api": {
       "type": "project.v0",
@@ -45,11 +53,12 @@
         }
       }
     },
-    "cosmos-roles": {
+    "cosmos-kv-roles": {
       "type": "azure.bicep.v0",
-      "path": "cosmos-roles.module.bicep",
+      "path": "cosmos-kv-roles.module.bicep",
       "params": {
-        "cosmos_outputs_name": "{cosmos.outputs.name}",
+        "cosmos_kv_outputs_name": "{cosmos-kv.outputs.name}",
+        "principalType": "",
         "principalId": ""
       }
     }
