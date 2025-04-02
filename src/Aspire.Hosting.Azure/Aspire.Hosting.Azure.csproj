@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Aspire.Hosting\Aspire.Hosting.csproj" />
+    <PackageReference Include="Aspire.Hosting" VersionOverride="9.2.0-preview.1.25202.1" />
     <PackageReference Include="System.IO.Hashing" />
     <PackageReference Include="Azure.Provisioning" />
     <PackageReference Include="Azure.Provisioning.KeyVault" />
