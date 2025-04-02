@@ -389,12 +389,12 @@ public sealed class BicepOutputReference(string name, AzureBicepResource resourc
     {
         get
         {
-            if (!Resource.Outputs.TryGetValue(Name, out var value))
+            if (!Resource.Outputs.TryGetValue(Name, out var value) || value is null)
             {
                 throw new InvalidOperationException($"No output for {Name}");
             }
 
-            return value?.ToString();
+            return value.ToString();
         }
     }
 

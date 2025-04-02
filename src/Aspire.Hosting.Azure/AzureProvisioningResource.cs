@@ -78,7 +78,7 @@ public class AzureProvisioningResource(string name, Action<AzureResourceInfrastr
 
         ConfigureInfrastructure(infrastructure);
 
-        EnsureParametersAlign(infrastructure);
+        EnsureParametersAndOutputsAlign(infrastructure);
 
         var generationPath = Directory.CreateTempSubdirectory("aspire").FullName;
         var moduleSourcePath = Path.Combine(generationPath, "main.bicep");
@@ -145,7 +145,11 @@ public class AzureProvisioningResource(string name, Action<AzureResourceInfrastr
         return provisionedResource;
     }
 
-    private void EnsureParametersAlign(AzureResourceInfrastructure infrastructure)
+    /// <summary>
+    /// Ensures that the parameters and outputs in the bicep infrastructure align with the Parameters and Outputs
+    /// properties on the current <see cref="AzureProvisioningResource"/> Aspire resource.
+    /// </summary>
+    private void EnsureParametersAndOutputsAlign(AzureResourceInfrastructure infrastructure)
     {
         // WARNING: GetParameters currently returns more than one instance of the same
         //          parameter. Its the only API that gives us what we need (a list of
@@ -176,6 +180,12 @@ public class AzureProvisioningResource(string name, Action<AzureResourceInfrastr
             {
                 Parameters.TryAdd(infrastructureParameter.BicepIdentifier, null);
             }
+        }
+
+        var outputs = infrastructure.GetProvisionableResources().OfType<ProvisioningOutput>();
+        foreach (var output in outputs)
+        {
+            Outputs.TryAdd(output.BicepIdentifier, null);
         }
     }
 }
