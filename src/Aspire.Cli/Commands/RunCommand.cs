@@ -11,7 +11,7 @@ using Aspire.Cli.Utils;
 using Aspire.Hosting;
 using Spectre.Console;
 using Spectre.Console.Rendering;
-using StreamJsonRpc;
+//using StreamJsonRpc;
 
 namespace Aspire.Cli.Commands;
 
@@ -226,14 +226,14 @@ internal sealed class RunCommand : BaseCommand
                             context.Refresh();
                         }
                     }
-                    catch (ConnectionLostException ex) when (ex.InnerException is OperationCanceledException)
-                    {
-                        // This exception will be thrown if the cancellation request reaches the WaitForExitAsync
-                        // call on the process and shuts down the apphost before the JsonRpc connection gets it meaning
-                        // that the apphost side of the RPC connection will be closed. Therefore if we get a 
-                        // ConnectionLostException AND the inner exception is an OperationCancelledException we can
-                        // asume that the apphost was shutdown and we can ignore it.
-                    }
+                    //catch (ConnectionLostException ex) when (ex.InnerException is OperationCanceledException)
+                    //{
+                    //    // This exception will be thrown if the cancellation request reaches the WaitForExitAsync
+                    //    // call on the process and shuts down the apphost before the JsonRpc connection gets it meaning
+                    //    // that the apphost side of the RPC connection will be closed. Therefore if we get a 
+                    //    // ConnectionLostException AND the inner exception is an OperationCancelledException we can
+                    //    // asume that the apphost was shutdown and we can ignore it.
+                    //}
                     catch (OperationCanceledException)
                     {
                         // This exception will be thrown if the cancellation request reaches the our side

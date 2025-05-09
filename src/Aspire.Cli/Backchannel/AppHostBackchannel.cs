@@ -2,10 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.Diagnostics;
-using System.Net.Sockets;
+//using System.Net.Sockets;
 using System.Runtime.CompilerServices;
+//using System.Security.Cryptography;
 using Microsoft.Extensions.Logging;
-using StreamJsonRpc;
+//using StreamJsonRpc;
 
 namespace Aspire.Cli.Backchannel;
 
@@ -22,25 +23,28 @@ internal interface IAppHostBackchannel
 
 internal sealed class AppHostBackchannel(ILogger<AppHostBackchannel> logger, CliRpcTarget target) : IAppHostBackchannel
 {
-    private const string BaselineCapability = "baseline.v1";
+    //private const string BaselineCapability = "baseline.v1";
 
     private readonly ActivitySource _activitySource = new(nameof(AppHostBackchannel));
-    private readonly TaskCompletionSource<JsonRpc> _rpcTaskCompletionSource = new();
+    //private readonly TaskCompletionSource<JsonRpc> _rpcTaskCompletionSource = new();
 
     public async Task<long> PingAsync(long timestamp, CancellationToken cancellationToken)
     {
         using var activity = _activitySource.StartActivity();
+        _ = logger;
+        _ = target;
+        await Task.Yield(); // Ensure the activity is started before awaiting the RPC call
+        return 10;
+        //var rpc = await _rpcTaskCompletionSource.Task;
 
-        var rpc = await _rpcTaskCompletionSource.Task;
+        //logger.LogDebug("Sent ping with timestamp {Timestamp}", timestamp);
 
-        logger.LogDebug("Sent ping with timestamp {Timestamp}", timestamp);
+        //var responseTimestamp = await rpc.InvokeWithCancellationAsync<long>(
+        //    "PingAsync",
+        //    [timestamp],
+        //    cancellationToken);
 
-        var responseTimestamp = await rpc.InvokeWithCancellationAsync<long>(
-            "PingAsync",
-            [timestamp],
-            cancellationToken);
-
-        return responseTimestamp;
+        //return responseTimestamp;
     }
 
     public async Task RequestStopAsync(CancellationToken cancellationToken)
@@ -50,133 +54,143 @@ internal sealed class AppHostBackchannel(ILogger<AppHostBackchannel> logger, Cli
         // which will allow the CLI to await the pending run.
 
         using var activity = _activitySource.StartActivity();
+        await Task.Yield(); // Ensure the activity is started before awaiting the RPC call
+        return;
+        //var rpc = await _rpcTaskCompletionSource.Task;
 
-        var rpc = await _rpcTaskCompletionSource.Task;
+        //logger.LogDebug("Requesting stop");
 
-        logger.LogDebug("Requesting stop");
-
-        await rpc.InvokeWithCancellationAsync(
-            "RequestStopAsync",
-            Array.Empty<object>(),
-            cancellationToken);
+        //await rpc.InvokeWithCancellationAsync(
+        //    "RequestStopAsync",
+        //    Array.Empty<object>(),
+        //    cancellationToken);
     }
 
     public async Task<(string BaseUrlWithLoginToken, string? CodespacesUrlWithLoginToken)> GetDashboardUrlsAsync(CancellationToken cancellationToken)
     {
         using var activity = _activitySource.StartActivity();
 
-        var rpc = await _rpcTaskCompletionSource.Task;
+        await Task.Yield(); // Ensure the activity is started before awaiting the RPC call
+        return default;
+        //var rpc = await _rpcTaskCompletionSource.Task;
+        //logger.LogDebug("Requesting dashboard URL");
 
-        logger.LogDebug("Requesting dashboard URL");
+        //var url = await rpc.InvokeWithCancellationAsync<(string BaseUrlWithLoginToken, string? CodespacesUrlWithLoginToken)>(
+        //    "GetDashboardUrlsAsync",
+        //    Array.Empty<object>(),
+        //    cancellationToken);
 
-        var url = await rpc.InvokeWithCancellationAsync<(string BaseUrlWithLoginToken, string? CodespacesUrlWithLoginToken)>(
-            "GetDashboardUrlsAsync",
-            Array.Empty<object>(),
-            cancellationToken);
-
-        return url;
+        //return url;
     }
 
     public async IAsyncEnumerable<(string Resource, string Type, string State, string[] Endpoints)> GetResourceStatesAsync([EnumeratorCancellation]CancellationToken cancellationToken)
     {
         using var activity = _activitySource.StartActivity();
+        await Task.Yield(); // Ensure the activity is started before awaiting the RPC call
+        yield break;
 
-        var rpc = await _rpcTaskCompletionSource.Task;
+        //var rpc = await _rpcTaskCompletionSource.Task;
 
-        logger.LogDebug("Requesting resource states");
+        //logger.LogDebug("Requesting resource states");
 
-        var resourceStates = await rpc.InvokeWithCancellationAsync<IAsyncEnumerable<(string Resource, string Type, string State, string[] Endpoints)>>(
-            "GetResourceStatesAsync",
-            Array.Empty<object>(),
-            cancellationToken);
+        //var resourceStates = await rpc.InvokeWithCancellationAsync<IAsyncEnumerable<(string Resource, string Type, string State, string[] Endpoints)>>(
+        //    "GetResourceStatesAsync",
+        //    Array.Empty<object>(),
+        //    cancellationToken);
 
-        logger.LogDebug("Received resource states async enumerable");
+        //logger.LogDebug("Received resource states async enumerable");
 
-        await foreach (var state in resourceStates.WithCancellation(cancellationToken))
-        {
-            yield return state;
-        }
+        //await foreach (var state in resourceStates.WithCancellation(cancellationToken))
+        //{
+        //    yield return state;
+        //}
     }
 
     public async Task ConnectAsync(string socketPath, CancellationToken cancellationToken)
     {
-        try
+        //try
         {
             using var activity = _activitySource.StartActivity();
+            await Task.Yield(); // Ensure the activity is started before awaiting the RPC call
+            return;
 
-            if (_rpcTaskCompletionSource.Task.IsCompleted)
-            {
-                throw new InvalidOperationException("Already connected to AppHost backchannel.");
-            }
+            //if (_rpcTaskCompletionSource.Task.IsCompleted)
+            //{
+            //    throw new InvalidOperationException("Already connected to AppHost backchannel.");
+            //}
 
-            logger.LogDebug("Connecting to AppHost backchannel at {SocketPath}", socketPath);
-            var socket = new Socket(AddressFamily.Unix, SocketType.Stream, ProtocolType.Unspecified);
-            var endpoint = new UnixDomainSocketEndPoint(socketPath);
-            await socket.ConnectAsync(endpoint, cancellationToken);
-            logger.LogDebug("Connected to AppHost backchannel at {SocketPath}", socketPath);
+            //logger.LogDebug("Connecting to AppHost backchannel at {SocketPath}", socketPath);
+            //var socket = new Socket(AddressFamily.Unix, SocketType.Stream, ProtocolType.Unspecified);
+            //var endpoint = new UnixDomainSocketEndPoint(socketPath);
+            //await socket.ConnectAsync(endpoint, cancellationToken);
+            //logger.LogDebug("Connected to AppHost backchannel at {SocketPath}", socketPath);
 
-            var stream = new NetworkStream(socket, true);
-            var rpc = JsonRpc.Attach(stream, target);
+            //var stream = new NetworkStream(socket, true);
+            //var rpc = JsonRpc.Attach(stream, target);
 
-            var capabilities = await rpc.InvokeWithCancellationAsync<string[]>(
-                "GetCapabilitiesAsync",
-                Array.Empty<object>(),
-                cancellationToken);
+            //var capabilities = await rpc.InvokeWithCancellationAsync<string[]>(
+            //    "GetCapabilitiesAsync",
+            //    Array.Empty<object>(),
+            //    cancellationToken);
 
-            if (!capabilities.Any(s => s == BaselineCapability))
-            {
-                throw new AppHostIncompatibleException(
-                    $"AppHost is incompatible with the CLI. The AppHost must be updated to a version that supports the {BaselineCapability} capability.",
-                    BaselineCapability
-                    );
-            }
+            //if (!capabilities.Any(s => s == BaselineCapability))
+            //{
+            //    throw new AppHostIncompatibleException(
+            //        $"AppHost is incompatible with the CLI. The AppHost must be updated to a version that supports the {BaselineCapability} capability.",
+            //        BaselineCapability
+            //        );
+            //}
 
-            _rpcTaskCompletionSource.SetResult(rpc);
+            //_rpcTaskCompletionSource.SetResult(rpc);
         }
-        catch (RemoteMethodNotFoundException ex)
-        {
-            logger.LogError(ex, "Failed to connect to AppHost backchannel. The AppHost must be updated to a version that supports the {BaselineCapability} capability.", BaselineCapability);
-            throw new AppHostIncompatibleException(
-                $"AppHost is incompatible with the CLI. The AppHost must be updated to a version that supports the {BaselineCapability} capability.",
-                BaselineCapability
-                );
-        }
+        //catch (RemoteMethodNotFoundException ex)
+        //{
+        //    logger.LogError(ex, "Failed to connect to AppHost backchannel. The AppHost must be updated to a version that supports the {BaselineCapability} capability.", BaselineCapability);
+        //    throw new AppHostIncompatibleException(
+        //        $"AppHost is incompatible with the CLI. The AppHost must be updated to a version that supports the {BaselineCapability} capability.",
+        //        BaselineCapability
+        //        );
+        //}
     }
 
     public async IAsyncEnumerable<(string Id, string StatusText, bool IsComplete, bool IsError)> GetPublishingActivitiesAsync([EnumeratorCancellation]CancellationToken cancellationToken)
     {
         using var activity = _activitySource.StartActivity();
 
-        var rpc = await _rpcTaskCompletionSource.Task;
+        await Task.Yield(); // Ensure the activity is started before awaiting the RPC call
+        yield break;
 
-        logger.LogDebug("Requesting publishing activities.");
+        //var rpc = await _rpcTaskCompletionSource.Task;
 
-        var resourceStates = await rpc.InvokeWithCancellationAsync<IAsyncEnumerable<(string Id, string StatusText, bool IsComplete, bool IsError)>>(
-            "GetPublishingActivitiesAsync",
-            Array.Empty<object>(),
-            cancellationToken);
+        //logger.LogDebug("Requesting publishing activities.");
 
-        logger.LogDebug("Received publishing activities.");
+        //var resourceStates = await rpc.InvokeWithCancellationAsync<IAsyncEnumerable<(string Id, string StatusText, bool IsComplete, bool IsError)>>(
+        //    "GetPublishingActivitiesAsync",
+        //    Array.Empty<object>(),
+        //    cancellationToken);
 
-        await foreach (var state in resourceStates.WithCancellation(cancellationToken))
-        {
-            yield return state;
-        }
+        //logger.LogDebug("Received publishing activities.");
+
+        //await foreach (var state in resourceStates.WithCancellation(cancellationToken))
+        //{
+        //    yield return state;
+        //}
     }
 
     public async Task<string[]> GetCapabilitiesAsync(CancellationToken cancellationToken)
     {
         using var activity = _activitySource.StartActivity();
+        await Task.Yield(); // Ensure the activity is started before awaiting the RPC call
+        return default!;
+        //var rpc = await _rpcTaskCompletionSource.Task.ConfigureAwait(false);
 
-        var rpc = await _rpcTaskCompletionSource.Task.ConfigureAwait(false);
+        //logger.LogDebug("Requesting capabilities");
 
-        logger.LogDebug("Requesting capabilities");
+        //var capabilities = await rpc.InvokeWithCancellationAsync<string[]>(
+        //    "GetCapabilitiesAsync",
+        //    Array.Empty<object>(),
+        //    cancellationToken).ConfigureAwait(false);
 
-        var capabilities = await rpc.InvokeWithCancellationAsync<string[]>(
-            "GetCapabilitiesAsync",
-            Array.Empty<object>(),
-            cancellationToken).ConfigureAwait(false);
-
-        return capabilities;
+        //return capabilities;
     }
 }
