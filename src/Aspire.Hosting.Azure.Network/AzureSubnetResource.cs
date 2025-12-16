@@ -4,6 +4,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using Aspire.Hosting.ApplicationModel;
+using Azure.Core;
 using Azure.Provisioning;
 using Azure.Provisioning.Network;
 
@@ -58,6 +59,11 @@ public class AzureSubnetResource(string name, string subnetName, string addressP
     /// </summary>
     public AzureNatGatewayResource? NatGateway { get; internal set; }
 
+    /// <summary>
+    /// Gets the list of service endpoints for this subnet.
+    /// </summary>
+    public List<ServiceEndpointConfig> ServiceEndpoints { get; } = [];
+
     private static string ThrowIfNullOrEmpty([NotNull] string? argument, [CallerArgumentExpression(nameof(argument))] string? paramName = null)
         => !string.IsNullOrEmpty(argument) ? argument : throw new ArgumentNullException(paramName);
 
@@ -78,6 +84,28 @@ public class AzureSubnetResource(string name, string subnetName, string addressP
             subnet.NatGatewayId = NatGateway.Id.AsProvisioningParameter(infra);
         }
 
+        if (this.TryGetLastAnnotation<AzureNetworkSecurityGroupReferenceAnnotation>(out var nsgAnnotation))
+        {
+            var nsgIdParameter = nsgAnnotation.NsgResource.Id.AsProvisioningParameter(infra);
+
+            // Create a reference to the NSG without adding it to infrastructure
+            subnet.NetworkSecurityGroup = new NetworkSecurityGroup(Infrastructure.NormalizeBicepIdentifier($"{nsgAnnotation.NsgResource.Name}_subnetref"))
+            {
+                Id = nsgIdParameter
+            };
+        }
+
+        // Add service endpoints
+        foreach (var serviceEndpoint in ServiceEndpoints)
+        {
+            subnet.ServiceEndpoints.Add(new ServiceEndpointProperties
+            {
+                Service = serviceEndpoint.Service,
+                Locations = new BicepList<AzureLocation>(
+                    serviceEndpoint.Locations.Select(loc => new BicepValue<AzureLocation>(new AzureLocation(loc))).ToList())
+            });
+        }
+
         // add a provisioning output for the subnet ID so it can be referenced by other resources
         infra.Add(new ProvisioningOutput(Id.Name, typeof(string))
         {
@@ -87,3 +115,10 @@ public class AzureSubnetResource(string name, string subnetName, string addressP
         return subnet;
     }
 }
+
+/// <summary>
+/// Configuration for a service endpoint on a subnet.
+/// </summary>
+/// <param name="Service">The service name (e.g., "Microsoft.Storage", "Microsoft.Sql").</param>
+/// <param name="Locations">The locations where the service endpoint is enabled.</param>
+public record ServiceEndpointConfig(string Service, string[] Locations);
